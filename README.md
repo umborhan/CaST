@@ -1,708 +1,422 @@
-# Reliable Policy Transfer for Safety-Aware End-to-End Driving with Deep Reinforcement Learning
-**CVPR 2026 · Submission 38759**  
-> Published in the Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), June 2026, pp. 32134–32143.  
-> Read the full paper here: [Open Access CVPR 2026 Paper](https://openaccess.thecvf.com/content/CVPR2026/html/Borhan_Reliable_Policy_Transfer_for_Safety-Aware_End-to-End_Driving_with_Deep_Reinforcement_CVPR_2026_paper.html)
+# Transfer What Is Caused and Covered: Policy Transfer for Safe End-to-End Driving
 
+**CaST — Causal-Support Transfer** · CARLA 0.9.15 · PyTorch · Closed-loop policy adaptation
 
----
+![CARLA](https://img.shields.io/badge/CARLA-0.9.15-orange) ![Python](https://img.shields.io/badge/Python-3.10-blue) ![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red) ![License](https://img.shields.io/badge/license-see%20LICENSE-lightgrey)
 
-[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://python.org)
-[![CARLA](https://img.shields.io/badge/CARLA-0.9.15-orange)](https://carla.org)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-red)](https://pytorch.org)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+CaST studies a specific failure mode in transferring an end-to-end driving policy: **a source behavior may be useful in one interaction and misleading in another, even within the same target scene**. Instead of treating the entire target observation as equally transferable, CaST estimates (i) whether an entity affects a safe driving decision and (ii) whether its interaction is represented in source experience. Those estimates influence alignment, uncertainty, and selection of adaptation episodes.
 
-> **Uddin Md. Borhan, Arif Raza, Zhiliang Lin, Lu Wang, Jianqiang Li, Jie Chen**  
-> College of Computer Science and Software Engineering, Shenzhen University  
-> Corresponding author: chenjie@szu.edu.cn
+This repository provides the CARLA implementation, frozen-policy evaluation code, selected B20 checkpoints, route-level summaries, ablation files, and illustrative figures. The README emphasizes the **implementation and experiment interface**, rather than reproducing the paper's derivations.
 
----
+> **Research status.** Results are descriptive and protocol-specific. The complete seed-0 evaluations and the currently archived seed-1 subset must not be interpreted as a fully replicated multi-seed study. The checkpoint bundle contains *adapted actors*, not necessarily all source-perception artifacts required to re-create or evaluate them from an empty directory. This is simulator research code, **not a road-ready driving system**.
 
-## Overview
+## 1. Method at a glance
 
-<p align="justify">
-This repository contains the official implementation of a unified Deep Reinforcement Learning (DRL) framework for <b>safety-aware end-to-end autonomous driving with reliable policy transfer</b> in <b>CARLA 0.9.15</b>. The entire system (environment, neural networks, SAC agent, training loops, and evaluation) is implemented in a single self-contained file `car.py` (~4,600 lines).
-</p>
+**Framework diagram:** [CaST system overview (PDF)](figures/cast-framework.pdf).
 
-The framework addresses four tightly coupled challenges in closed-loop autonomous driving:
-1. <b>Ego-centric relational state:</b> An uncertainty-weighted attention graph captures causal interactions between the ego vehicle and nearby agents, making safety-critical influences explicit to the policy.
-2. <b>Differentiable multi-objective reward shaping:</b> Dense reward terms jointly optimize safety, progress, comfort, and uncertainty-aware behavior, avoiding unstable sparse event-only penalties.
-3. <b>Uncertainty-gated exploration:</b> Aleatoric and epistemic uncertainty are combined into a calibrated confidence signal that adaptively modulates policy entropy for risk-aware exploration.
-4. <b>Causal-semantic policy transfer:</b> Transfer learning aligns action distributions, relational attention, and uncertainty statistics across source and target domains, with meta-initialization for fast adaptation.
+The driving state contains an ego token `x₀`, detected entity tokens `xᵢ`, validity mask `mᵢ`, and a pooled scene representation `b(s)`. The policy operates over their relational representation. A separate frozen source projection, `W_S`, gives a stable reference for support queries during target adaptation.
 
----
+| Signal | Meaning in the implementation | What uses it |
+|:--|:--|:--|
+| `ĉᵢ` | Predicted effect of an intervention on entity `i`, supervised by simulator probes | Alignment, invariance, target scenario scoring |
+| `ρᵢ` | Rank-based coverage of the entity interaction in a frozen source feature bank | Alignment gate `βᵢ` |
+| `ρ̃ᵢ` | Coverage after accepted target-bank additions | Uncertainty floor `ℓ̃ᵢ` |
+| `ρ₀`, `ρ̃₀` | Analogous scene-level coverage, including contexts where entities are missed | Scene uncertainty |
+| `ū(s)` | Fused uncertainty from motion, coverage, and value disagreement | SAC entropy and cautious value estimation |
+| `U(s)` | Unresolved causal-support mass | CaST target-template sampler |
 
-## Unified System Model
+The intended decisions are **align** when a relevant interaction is covered, **retain uncertainty** when relevant but uncovered, and **reduce reliance** when an interaction has low estimated causal effect. These are *training signals*, not formal guarantees of route safety or causal identifiability.
 
-<p align="center">
-  <img src="./diagrams/unified_framework.png" width="90%" alt="Unified Framework"/>
-</p>
+**Decision-map diagram:** [Causal support map (PDF)](figures/support_map.pdf).
 
-<p align="justify">
-The unified framework integrates ego-centric relational state construction, dense multi-objective reward shaping, uncertainty-gated SAC exploration, and causal-semantic transfer learning, all sharing a single control-layer uncertainty interface (sigma-bar).
-</p>
-
----
-
-## Architecture
+## 2. Repository map
 
 ```text
-Perception (CARLA sensor stack)
-        |
-        v
-_collect_entity_features()  [CarlaReliableTransferEnv]
-  Edge tensor (B, M=10, 10-dim per edge):
-    [rel_x, rel_y, rel_vx, rel_vy, sem_vehicle, sem_walker, sem_tl,
-     curvature, heading_offset, sigma2_ale]
-  Observation noise: miss_prob = 0.08 + 0.22*dist_norm + 0.22*fog_norm
-        |
-        v
-GraphAttention  [car.py line 2999]
-  logit_i  = -||dp_i||^2 / (sigma2_i + eps)
-  alpha    = softmax(logits, masked)
-  z        = sum_i alpha_i * W_e * e_i   [64-dim]
-  sigma_ale = mean(sigma2_i, valid edges)
-        |
-CompactStateEncoder  [car.py line 3048]
-  scal_plus = cat([scalars_13, sigma_ale])
-  s = MLP(14->128->128)(scal_plus)
-  h = fuse(cat[z_64, s_128] -> 256 -> 256)
-        |
-        v
-SACAgent  [car.py line 3264]
-  Actor:  mu, logstd = MLP(h->256->3); action = tanh(u)*scale + bias
-  Critics: 5x Q(h, action); sigma_epi = Var_k[Q_k]
-  sigma_dec = sigma_ale + sigma_epi
-  sigma_bar = UncertaintyCalibrator(sigma_dec)
-  beta      = beta0 * (1 - sigma_bar)
-  L_actor   = E[alpha_eff * log_pi - min_k Q_k]
-        |
-        |--- Dense Reward [_compute_reward_components(), line 2652]
-        |    r_t = 0.45*r_s + 0.30*r_p + 0.15*r_c + 0.10*r_u
-        |
-        +--- Transfer (adapt mode) [compute_transfer_loss(), line 3453]
-             L_trans = KL(pi_s||pi_t) + lambda_a*MMD(alpha_s, alpha_t)
-                                       + lambda_u*||u_s - u_t||^2
-             MAML init: maml_style_initialize() [line 3592]
-```
-
----
-
-## Method Details
-
-This section describes how each framework component is concretely implemented in `car.py`.
-
-### 1. Ego-Centric Relational State
-
-**Classes:** `GraphAttention` (line 2999), `CompactStateEncoder` (line 3048)  
-**Environment:** `_collect_entity_features()`, `_route_observation_features()`, `_get_obs()`
-
-Each nearby entity (vehicle, walker, traffic light) is assembled into a 10-dimensional directed edge:
-
-```
-[rel_x, rel_y]         normalized ego-frame position  (/ entity_max_dist=60 m)
-[rel_vx, rel_vy]       normalized relative velocity   (/ 15 m/s, 10 m/s)
-[sem_v, sem_w, sem_tl] one-hot semantic class
-[curvature, heading]   local lane geometry kappa_i
-[sigma2]               per-entity aleatoric variance
-```
-
-Observation noise scales jointly with distance and fog density, forcing the model to be robust to partial observability:
-
-```python
-miss_prob = 0.08 + 0.22*dist_norm + 0.22*fog_norm   # entity dropout
-pos_std   = 0.35 * (0.45 + 0.80*dist_norm + 0.90*fog_norm)
-vel_std   = 0.45 * (0.35 + 0.75*dist_norm + 0.80*fog_norm)
-```
-
-At 60 m in dense fog, entity miss rate reaches ~52% and position noise reaches ±0.8 m.
-
-`GraphAttention` computes uncertainty-weighted attention in a single differentiable pass. Distant AND uncertain actors receive lower weight simultaneously:
-
-```python
-sigma2  = edges[..., -1].clamp(min=1e-3) + softplus(MLP(edges)) + 1e-3
-dp2     = (edges[..., 0:2] ** 2).sum(dim=-1)
-logit_i = -dp2 / (sigma2 + 1e-6)               # far and uncertain -> lower weight
-alpha   = softmax(logits, masked over valid slots)
-z       = sum_i(alpha_i * W_e * e_i)            # 64-dim attended embedding
-sigma_ale = sum(sigma2 * mask) / mask.sum()
-```
-
-`CompactStateEncoder` fuses the attended embedding with 13 ego scalars (speed, prev throttle/brake/steer, arc-length goal fraction, lane curvature, lane heading offset, route CTE, route heading error, lookahead x/y, velocity projection onto route tangent, corridor membership muA) plus the appended sigma_ale:
-
-```python
-scal_plus = cat([scalars_13, sigma_ale])    # 14-dim
-s = MLP(14 -> 128 -> 128)(scal_plus)
-h = fuse_MLP(cat[z_64, s_128] -> 256 -> 256)
-```
-
----
-
-### 2. Dense Differentiable Reward
-
-**Functions:** `_compute_reward_components()` (line 2652), `build_reward_from_info()` (line 3720)
-
-The reward is assembled from four smooth components. No terminal bonuses or sparse penalties are used (`goal_bonus = collision_penalty = 0`):
-
-```python
-r_t = w_s*r_s + w_p*r_p + w_c*r_c + w_u*r_u
-    # weights: 0.45 / 0.30 / 0.15 / 0.10  (sum = 1)
-```
-
-**Safety r_s** uses three smooth surrogates:
-
-```python
-muA    = 1 - (0.45*density_norm + 0.35*fog_norm + 0.20*curv_norm)  # corridor membership
-eps_mu = eps_min + (eps_max - eps_min) * muA      # tolerance 1.5 m to 4.0 m
-psi_L  = tanh(dL / eps_mu / tau_d)                # lane barrier  (tau_d=1.0)
-psi_P  = exp(-nearest_dist / tau_p)               # proximity     (tau_p=12.0)
-rho    = clip(z1 * z2, 0, 1)                      # red-light: distance * speed
-r_s    = 1 - k_l*psi_L - k_p*psi_P - k_r*rho    # k_l=0.8, k_p=0.6, k_r=0.7
-```
-
-The corridor tolerance eps(muA) shrinks automatically in fog, dense traffic, and sharp curves.
-
-**Progress r_p** blends arc-length advancement and velocity projection:
-
-```python
-rp_arc = tanh(delta_s / tau_s)              # step arc-length  (tau_s=1.5)
-v_hat  = route_obs['v_route'] * 10.0       # ego speed projected onto route tangent
-rp_vel = tanh(v_hat / tau_v)               # velocity signal  (tau_v=5.0)
-r_p    = 0.70 * rp_arc + 0.30 * rp_vel    # dense signal even between waypoints
-```
-
-**Comfort r_c** penalises jerk and steering rate quadratically:
-
-```python
-jerk       = ||acc_t - acc_{t-1}||_2 / dt   # dt = 0.05 s at 20 Hz
-steer_rate = (steer_t - steer_{t-1}) / dt
-r_c = -(k_j * jerk**2) - (k_delta * steer_rate**2)   # clipped to [-5, 0]
-    # k_j=0.05, k_delta=0.10
-```
-
-**Uncertainty r_u** uses a lightweight proxy during rollout for efficiency, then is corrected in the training loop so the critic learns the correct signal:
-
-```python
-# env.step(): fast proxy
-sigma_proxy = (1 - muA) * 0.70 + (1 - near_norm) * 0.30
-# train_loop(): recompute_agent_reward() overwrites the stored replay reward
-reward, sigma_bar = recompute_agent_reward(agent, obs, action, info)
-replay.add(obs, action, reward, next_obs, done)   # correct reward stored
-```
-
----
-
-### 3. Uncertainty-Gated Exploration
-
-**Classes:** `UncertaintyCalibrator` (line 3189), `SACAgent`  
-**Methods:** `compute_sigma_bar()`, `compute_actor_loss()` (line 3427), `fit_uncertainty_calibrator()`, `select_beta0_from_holdout()`
-
-Decision-time uncertainty is decomposed across aleatoric and epistemic components:
-
-```python
-sigma_epi = Var_k[Q_k(s, a)]             # disagreement across 5 critics
-sigma_dec = sigma_ale + sigma_epi
-sigma_bar = calibrator(sigma_dec)         # normalized to [0, 1]
-```
-
-`UncertaintyCalibrator` fits a robust scaler every `calibrate_every_steps=10,000` steps on replay samples, using the 5th–95th percentile range and the MAD-based scale, then maps via sigmoid:
-
-```python
-arr_mm    = clip((arr - lo) / (hi - lo), 0, 1)
-center    = median(arr_mm)
-scale     = 1.4826 * median(|arr_mm - center|)    # robust MAD scale
-sigma_bar = sigmoid((x_norm - center) / (scale * temperature))
-```
-
-`beta0` is automatically selected from `{0.5, 1.0}` each calibration cycle by evaluating actor loss on a held-out replay split, no manual tuning needed.
-
-Entropy gating in the actor update:
-
-```python
-beta      = beta0 * (1 - sigma_bar)    # high uncertainty -> small beta -> less entropy
-alpha_eff = alpha + lambda_ent * beta  # effective SAC temperature
-L_actor   = E[alpha_eff * log_pi - min_k Q_k]
-```
-
-`log_alpha` is clamped to `min=log(0.01)` after every alpha update. Without this floor, alpha collapsed to near-zero around step 18,000 during training, causing the policy to deterministically repeat the same NPC collision scenario at a fixed spawn.
-
----
-
-### 4. Causal-Semantic Transfer
-
-**Methods:** `compute_transfer_loss()` (line 3453), `maml_style_initialize()` (line 3592)  
-**Training functions:** `run_target_adaptation()` (line 4375), `run_target_policy_learning()` (line 4420)
-
-**Transfer loss** aligns three quantities between the frozen source and live target agent:
-
-```python
-# KL: action distribution alignment
-kl_loss  = KL(Normal(mu_s, std_s) || Normal(mu_t, std_t)).sum(action_dim).mean()
-# MMD: relational attention map alignment (5-kernel Gaussian MMD)
-mmd_loss = MMD(alpha_s.reshape(B,-1), alpha_t.reshape(B,-1))
-# Uncertainty moment matching: [sigma_bar, mean(sigma2_i), std(sigma2_i)]
-u_loss   = MSE(u_t, u_s.detach())
-L_trans  = kl_loss + lambda_alpha*mmd_loss + lambda_u*u_loss
-total_actor_loss = actor_loss + lambda_transfer * L_trans
-```
-
-The source agent is always `torch.no_grad()`-frozen; only target parameters receive gradients.
-
-**MAML initialisation** runs at the start of training and adaptation using collected warm-up batches:
-
-```python
-for each domain_batch:
-    fast_actor <- copy of actor (independent graph, same weights)
-    fast_actor -= lr_inner * grad(L_RL(fast_actor, support_half))
-    query_loss  = L_RL(fast_actor, query_half)
-    weight      = 1 / (1 + query_loss)           # down-weight poorly adapted domains
-    delta       = fast_actor_params - base_params
-actor_params += step_size * weighted_mean(delta)
-```
-
-The MAML loop contributes zero overhead at inference, only a single actor forward pass runs during evaluation.
-
----
-
-### 5. Training Loop and Action Filtering
-
-**Functions:** `train_loop()` (line 4141), `_policy_passthrough_filter()`, `_safety_filter()`
-
-The `train_loop()` function handles all training modes with a unified interface:
-
-```
-Startup:
-  Collect warm-up batches via random exploration (sample_exploration_action)
-  Apply MAML initialisation to actor parameters
-Per step:
-  1. Random actions for first start_steps=2000 steps; then stochastic actor.act()
-  2. env.step(action) -> next_obs, info
-  3. recompute_agent_reward() -> correct sigma_bar and reward (overwrites proxy)
-  4. replay.add(obs, action, reward, next_obs, done)
-  5. Every update_after=1024 steps: agent.update(batch, source_agent, source_batch)
-  6. Every calibrate_every_steps=10000: fit calibrator + auto-select beta0
-  7. Every save_every_steps=5000: save checkpoint
-  8. Every eval_every_steps=10000: run evaluate() on target town
-Dual replay (adapt mode only):
-  Source env runs in parallel; source_replay filled alongside target_replay
-  Both sampled every update step; source_batch passed to compute_transfer_loss()
-```
-
-Two selectable action post-processors sit between the raw RL action and CARLA `apply_control()`:
-
-| Mode | Function | Policy weight | Paper results |
-|---|---|---|---|
-| Default | `_policy_passthrough_filter()` | 80% policy / 20% guidance nominal | Yes |
-| Safety shield | `_safety_filter()` | Hard overrides in critical states | Evaluation only |
-
-<p align="justify">
-The passthrough filter blends in a rule-based guidance controller that increases its weight under large CTE (up to 70%) or wrong-lane detection. Stuck detection fires after 18 steps below 1 km/h and applies forced throttle 0.42 for 25 steps. Rate limiting on all three action dimensions (±0.06 throttle, ±0.08 brake, ±0.08 steer) prevents actuator chattering that would inflate the comfort penalty.
-</p>
-
----
-
-## Repository Layout
-
-```text
-safe-driving-drl/
-├── car.py                          <- full implementation (~4,600 lines)
-├── README.md
-├── requirements.txt
-├── close_loop.png
+CaST/
+├── code/
+│   ├── car.py                # environment, perception, policy, training, adaptation, aggregation
+│   └── car_eval.py           # frozen-checkpoint route evaluation and CSV export
 ├── checkpoints/
-│   ├── source_agent_best.pt        <- best checkpoint by success-like score
-│   └── source_agent.pt             <- final checkpoint at end of training
-├── diagrams/
-│   └── unified_framework.png
-├── docs/
-│   └── PROJECT_NOTES.md
-├── graphs/
-│   ├── reward_comparison.png
-│   ├── state_route.png
-│   ├── state_stability.png
-│   └── uncertainty_metrics.png
-├── logs/
-│   ├── eval_500m_log.txt           <- Town10HD 500 m route eval
-│   ├── eval_500m_npc_log.txt
-│   ├── eval_town02_150m_npc_log.txt
-│   ├── eval_town02_200m_npc_log.txt
-│   ├── eval_town05_500m_npc_log.txt
-│   ├── eval_town05_npc_log.txt
-│   ├── eval_town10_mixed_log.txt
-│   └── log.txt                     <- source training log (500k steps)
+│   ├── CHECKPOINT_INDEX.csv  # seed, suite, original paths, hashes
+│   ├── seed0/{A,L,C}/.../agent.pt
+│   └── seed1/{A,L,C}/.../agent.pt
+├── script/                  # archived experiment launchers; see SCRIPT_INDEX.txt
 ├── results/
-│   ├── summaries/
-│   │   ├── Town02_zeroshot_source_agent_summary.csv
-│   │   ├── Town05_zeroshot_source_agent_summary.csv
-│   │   └── Town10HD_Opt_zeroshot_source_agent_summary.csv
-│   ├── Town02_zeroshot_source_agent.csv
-│   ├── Town05_zeroshot_source_agent.csv
-│   ├── Town10HD_Opt_zeroshot_source_agent.csv
-│   └── trajectories/
-├── screenshot/
-│   ├── 1.png                       <- intersection, Park Avenue (training)
-│   ├── 2.png                       <- straight road with signals (evaluation)
-│   └── 3.png                       <- curved road, commercial district
-├── scripts/
-│   ├── eval_town05_300m_npc.sh
-│   ├── eval_town05_500m_npc.sh
-│   ├── eval_town05.sh
-│   ├── eval_town10hd_500m_npc.sh
-│   ├── eval_town10hd.sh
-│   ├── run_carla_server.sh
-│   ├── show_tree.sh
-│   ├── train_paper.sh              <- paper-faithful 500k source training
-│   └── train_short.sh
-└── video/
-    ├── 1.mp4                       <- intersection navigation demo
-    ├── 1.png                       <- thumbnail for Demo 1
-    ├── 2.mp4                       <- straight road with signals demo
-    ├── 2.png                       <- thumbnail for Demo 2
-    └── 3.mp4                       <- curved road, low visibility demo
-    └── 3.png                       <- thumbnail for Demo 3
+│   ├── paper_csv/           # selected paper-facing tables and provenance
+│   ├── CaST_supplement_snapshot/
+│   └── cast_b20_*/          # source experiment CSV exports, organized by run family
+├── figures/                 # method / supplementary visuals
+├── graphs/                  # reported experiment plots
+├── screenshot/              # CARLA images
+├── video/                   # CARLA recordings (Git LFS)
+└── LICENSE
 ```
 
----
+**Start here:** `code/car.py` for the algorithm, `code/car_eval.py` for evaluation, `results/paper_csv/10_result_provenance.csv` for result provenance, and `checkpoints/CHECKPOINT_INDEX.csv` for archived weights. The result folders include historical, incomplete, and summary-only CSVs; a filename's presence is **not** a completion certificate.
 
-## Requirements
-
-- Ubuntu 20.04 / 22.04
-- CARLA 0.9.15
-- Python 3.10
-- PyTorch 2.x
-- NVIDIA GPU (tested on RTX 3090; actor inference adds ≤3 ms vs vanilla SAC)
-
-```bash
-conda create -n safe python=3.10
-conda activate safe
-pip install -r requirements.txt
-```
-
-`requirements.txt`:
+## 3. Execution flow — from cameras to the adapted actor
 
 ```text
-torch>=2.0
-numpy
-gymnasium
-matplotlib
+CARLA world / route / traffic / adverse weather
+       │
+       ├── six surrounding RGB views (and depth in the rgbd configuration)
+       │         │
+       │         └── frozen detector / segmentation + token tracking
+       │                 ├── ego scalars x₀
+       │                 ├── per-entity features xᵢ and valid mask
+       │                 └── pooled scene context b(s)
+       │
+       └── relational actor
+                 ├── attention wᵢ and embedding hᵢ
+                 ├── motion head → displacement + predicted variance
+                 ├── causal head → ĉᵢ
+                 └── SAC policy → action a
+
+Source artifacts (frozen)          Target adaptation (trainable)
+  W_S, source policy π_S            actor / critics / auxiliary heads
+  interaction bank Z_S         →    βᵢ, ℓ̃ᵢ, ū, U(s)
+  scene bank B_S                     selective alignment + invariance
+  null intervention bank            B20 scenario sampling and replay updates
+                                        │
+                                        ▼
+                                  adapted agent.pt
+                                        │
+                                        ▼
+                             car_eval.py (no learning)
 ```
 
----
+The released code supports multiple observation interfaces via `--perception`: `camera` (six cameras and the frozen BEV detector), `rgbd` (RGB/depth cameras and frozen segmentation/tracking), and `gt` (a noisy privileged-token diagnostic). **Do not combine results from these interfaces as if they were the same sensing protocol.** The B20 experiments described here use the camera-derived RGB-D research pipeline; reproduce the precise saved configuration from the run metadata rather than relying on command defaults.
 
-## Quick Start
+### 3.1 Observation, detection, and tracking
 
-### 1. Start CARLA
+`CameraRig` receives synchronized multi-view sensor data. `BEVDetector` transforms image evidence into spatial detections; optional RGB-D components `SegNet`, `rgbd_detect`, and `TokenTracker` construct and maintain object identities across frames. `CaSTCarlaEnv` then combines detected objects with ego motion and route information into the tensors consumed by the actor.
+
+Code navigation:
+
+```python
+# code/car.py: key entry points (names, not a drop-in execution script)
+CameraRig                     # camera callbacks and frame retrieval
+BEVDetector                   # camera-to-BEV detections
+SegNet, rgbd_detect           # RGB-D segmentation / clustering alternative
+TokenTracker                  # object association and short occlusions
+CaSTCarlaEnv._rgbd_entity_features
+CaSTCarlaEnv._tokens_from     # entity/scene features
+RelationalEncoder             # attention + interaction embedding
+CaSTActor                     # action distribution and motion head
+```
+
+The model observes **camera-derived** tokens in the camera modes. Simulator actor states also exist in the code for teacher supervision, intervention construction, and auditing. Such privileged information must not be confused with ordinary inference inputs. `--light-source map_camera` associates a relevant traffic light using map geometry but reads the light color from camera evidence; `v2i` accesses broadcast state and is a different, assisted configuration.
+
+### 3.2 Relational representation and policy
+
+`RelationalEncoder` embeds the per-object features and computes masked attention. Schematically:
+
+```python
+h_i = W_theta(x_i)
+logit_i = relevance(x_0, x_i) - λ_p * ||p_i||² - λ_d * log(σ_i² + ε)
+w_i = masked_softmax(logit_i, valid=m_i)
+s = concat(sum_i(w_i * h_i), x_0)
+```
+
+The actor uses a bounded squashed-Gaussian action distribution, and an ensemble of critics estimates action values. `CaSTActor.motion_head` additionally predicts each entity's relative displacement and variance. The motion variance is an aleatoric channel; critic disagreement is a separate epistemic channel. The exact action interpretation depends on the saved `--lateral-control` setting. Under `controller`, the route tracker supplies steering while the learned policy determines longitudinal behavior. Under `policy`, steering is learned. **Evaluation enforces compatibility with the checkpoint**, so do not switch between the two modes when reporting a result.
+
+### 3.3 Source coverage and the alignment gate
+
+`CoverageModel` queries frozen-source k-nearest-neighbor distances. The rank of a target distance relative to held-out source distances defines `ρ`, rather than a hand-selected Euclidean cutoff. Source entity features and whole-scene features have separate banks.
+
+The implemented gate is compact:
+
+```python
+# code/car.py: gate_and_floor()
+beta = clamp(rho / tau_rho - 1, 0, 1)
+ell  = clamp(1 - rho / tau_rho, 0, 1)
+
+# CaSTAgent: thresholds derive from a run specification
+τ_c   = 1 - q
+τ_rho = q
+```
+
+`βᵢ` weights source alignment; `ℓ̃ᵢ` is computed from updated support for the uncertainty channel. Importantly, **the frozen source ranks and the growing target bank play different roles**. Adding target observations should not rewrite the original source reference distribution.
+
+The run's `q` is consequential: with `q=0.05`, for example, the coverage gate saturates at `ρ ≥ 0.10`. This is an implementation property, not evidence that support ranks are calibrated probabilities of correct driving.
+
+### 3.4 Physical interventions and causal supervision
+
+The causal estimator is not an attention score. Training-state probes alter one scene element while attempting to hold the remaining scenario comparable. `expert_action`, `rollout_margin`, `apply_op`, and `entity_effects` evaluate the change in a privileged decision and a short-horizon safety margin. `null_probe_effects` and `NullBank` provide reference effects for distance-conditioned ranking. `Labeler` schedules intervention work; `CausalDataset` stores labels; `CausalHead` predicts `ĉᵢ` during routine execution.
+
+```python
+# Conceptual dataflow, not an exact function signature
+factual  = (expert_action(scene), rollout_margin(scene))
+changed  = apply_op(scene, entity=i, intervention=omega)
+probe    = (expert_action(changed), rollout_margin(changed))
+raw_i    = action_gap(factual, probe) + safety_margin_gap(factual, probe)
+c_i      = null_bank.rank(raw_i, distance_bin_i)
+loss_E   = mean((causal_head(x_0, x_i) - c_i)**2)
+```
+
+Token removal also appears as a differentiable proxy in the invariance objective. **Removing an input token is not equivalent to a physical simulator intervention**; the code distinguishes those operations. The repository's summary CSVs do not by themselves establish held-out causal-label accuracy.
+
+### 3.5 Updating the policy
+
+`CaSTAgent.update` orchestrates the SAC losses, actor regularization, causal relevance, and uncertainty. The policy term is based on a cautious value estimate, while transfer terms can preserve or suppress particular source relationships.
+
+```python
+# Conceptual decomposition; coefficients and branches are run-dependent
+L_total = L_SAC + λ_A * L_align + λ_I * L_invariance
+                + λ_M * L_motion + λ_E * L_effect
+                + supervised_imitation_terms
+```
+
+Several **important implementation choices** are configurable:
+
+| Option | Code behavior | Why it matters |
+|:--|:--|:--|
+| `--align-metric action` | Squared difference in *squashed action space* | Default experimental transfer distance; not policy KL |
+| `--align-metric kl` | Gaussian policy divergence | Alternate / earlier alignment formulation |
+| `--uncertainty-fusion mean` | Averages active uncertainty contributions | Does not guarantee monotonicity or calibration |
+| `--uncertainty-fusion sum` | Additive fusion | Can saturate; a separate protocol choice |
+| `--critic-target lcb` | Mean target value with disagreement penalty | Changes the value-learning target |
+| `--target-state-bc-weight` | Enables optional privileged imitation on selected target states | Assisted setting; report separately when enabled |
+| `--use-safety-shield` | Optional evaluation-time shield | **Not** the unshielded B20 paper protocol |
+
+The manuscript's mathematical exposition is an abstract method description. For an exact replication, the **run configuration and these implementation branches take precedence**; do not claim that an `action`-distance experiment directly evaluated a KL objective.
+
+### 3.6 Choosing target episodes
+
+`TemplateSampler` scores condition templates using the selected sampling rule. For CaST, the score comes from mean unresolved causal mass, `U(s)`; for other variants, sampling may be uniform or uncertainty-based. Scores are updated after episodes, and high-scoring templates can generate local variants in traffic load, weather, and degradation.
+
+```python
+# Simplified version of TemplateSampler.sample / update
+score[m] = running_mean(observed_U_for_template_m)
+prob[m]  = (1 - eps) * softmax(score / temperature)[m] + eps / M
+chosen   = sample(prob, constrained_by_current_town_and_weather)
+```
+
+To limit CARLA town switches, `run_adaptation` collects episodes in town blocks. A separate balancing option can allocate initial visits across weather conditions. The fixed target budget `B` counts **completed adaptation episodes**, not failed simulator startups or interrupted rollouts.
+
+**Coverage-bank acceptance in the released code:** the acceptance condition uses safety statistics of the **just-collected adaptation episode** (`collision` and `min_phi`), rather than an independently executed validation episode. The README states this explicitly because it affects interpretation of the algorithm's *validated growth* terminology.
+
+## 4. Code tour: where to start reading
+
+The numbers below are approximate line positions in the uploaded 2026-11-24 version of `code/car.py`; search for the names rather than depending on offsets.
+
+| Component / callable | Approx. line | Purpose |
+|:--|--:|:--|
+| `Config` | 573 | Environment, model, optimizer, simulator and protocol defaults |
+| `CaSTCarlaEnv` | 5667 | Conditions, observations, route execution, events and safety measurements |
+| `CameraRig`, `BEVDetector`, `SegNet`, `TokenTracker` | 4834–5464 | Sensor-to-entity processing |
+| `entity_effects`, `null_probe_effects`, `NullBank` | 7251–7304 | Physical probes and reference-effect distributions |
+| `RelationalEncoder`, `CaSTActor`, `CaSTCritic`, `CausalHead` | 7491–7762 | Policy and auxiliary networks |
+| `CoverageModel`, `gate_and_floor` | 7818–7866 | Rank support, source/target bank queries and gates |
+| `CaSTReplay`, `RunSpec` | 7876–8045 | Training transitions and experiment identity |
+| `CaSTAgent` | 8119 | Learning, acting, uncertainty, transfer losses and checkpoint loading |
+| `build_suites` | 8806 | Definition of source, appearance, layout and combined shifts |
+| `train_episode` | 9632 | A single episode, supervision, rewards and actor/critic updates |
+| `run_rgbd_perception_stage`, `run_source_stage` | 10323–10597 | Perception and source-policy stages |
+| `SourceArtifacts`, `make_run_agent` | 10739–10862 | Frozen source models, feature banks and run initialization |
+| `TemplateSampler`, `run_adaptation` | 10912–10981 | Budgeted target sampling, checkpoint/resume, bank growth |
+| `evaluate_suite` | 11239 | Deterministic held-out route evaluation |
+| `plan`, `aggregate` | 11551, 11731 | Experimental sweep construction and reporting |
+| `supervisor_main` | 12376 | CARLA process recovery and map-switch orchestration |
+
+### `code/car_eval.py`: two evaluation interfaces
+
+`car_eval.py` dynamically imports its sibling `car.py` and explicitly checks that the necessary functions exist. Keep **both files from the same revision**.
+
+| Entry point | Role |
+|:--|:--|
+| `load_car_module` | Imports the matching training module |
+| `load_agent`, `freeze` | Loads finished adaptation weights and disables gradients |
+| `evaluate_town` | Legacy suite/town evaluation, resumable JSON records |
+| `pilot_routes`, `drive_pilot_episode` | Pilot-style fixed-seed route evaluation |
+| `evaluate_pilot_town` | Source/adapted pilot comparison |
+| `aggregate_main` | Rebuilds summaries from completed evaluations |
+| `supervisor_main` | Runs towns with simulator restarts / isolation |
+
+The evaluator has **two output protocols**. The pilot interface (the evaluator's default) writes tagged route/episode files. The archived B20 paper launchers use the **legacy paper-stage interface** with per-town `eval_<suite>__<town>.json` and derived CSVs. Changing `--eval-stages`, the route seed, or the experiment tag changes what is being measured.
+
+## 5. Experimental protocol and released evidence
+
+The paper studies three controlled transfer conditions. All four methods receive the same nominal **B20 adaptation budget** in the matched comparisons: SAC fine-tuning, Uniform alignment, Open-set entropy, and **CaST**.
+
+| Suite | Domain change | Seed-0 matched held-out evaluation |
+|:--|:--|:--|
+| `A` — appearance | Source towns with adverse weather / visual conditions | Town03 + Town10HD; 20 routes per method/town, 160 method-route records |
+| `L` — layout | Changed road layout, source-like weather | Town01 + Town04 + Town05; 10 routes per method/town, 120 records |
+| `C` — combined | Changed town layout with adverse visual conditions | Town01 + Town04 + Town05; 20 routes per method/town, 240 records |
+| `C` — four-town extension | Includes Town02 in addition to the three-town subset | 20 routes per method/town, 320 records |
+
+**The four-town C evaluation overlaps with the three-town subset.** It is not an independent replication. Seed-1 Town03 appearance-shift results are archived separately; incomplete seed-1 towns are not pooled into a completed A/L/C comparison. The six stored CaST adaptation checkpoints do not imply that all their frozen policy evaluations are finished.
+
+The primary metrics are driving score (`DS`), success rate (`SR`), route completion (`RC`), infraction score (`IS`), collisions per driven kilometer, minimum time-to-collision (`TTC`, capped at 10 s for reported means), and cross-track error (`CTE`). Route success and driving score measure different properties; a high success percentage does not automatically imply best DS or collision performance.
+
+### Selected seed-0 measurements
+
+| Suite / subset | SAC fine-tuning DS / SR | Uniform DS / SR | Open-set DS / SR | CaST DS / SR |
+|:--|--:|--:|--:|--:|
+| A — 2 towns, N=40/method | 95.74 / 92.50% | 91.00 / 85.00% | 90.76 / 80.00% | **88.09 / 60.00%** |
+| L — 3 towns, N=30/method | 95.84 / 73.33% | 95.87 / 80.00% | 93.30 / 86.67% | **92.36 / 76.67%** |
+| C — 3 towns, N=60/method | 93.60 / 81.67% | 94.02 / 85.00% | 92.17 / 86.67% | **90.79 / 86.67%** |
+| C — 4 towns, N=80/method | 94.23 / 82.50% | 92.33 / 77.50% | 91.71 / 83.75% | **90.20 / 83.75%** |
+
+These values are reported for transparency, **not as claims that CaST dominates the baselines**. CaST is competitive on certain route-success and safety indicators, while some baselines achieve higher mean driving scores. See the route-level exports for failure cases and matched comparisons.
+
+For the main-paper CSV views, inspect:
 
 ```bash
-# Headless — recommended for training
-./CarlaUE4.sh -RenderOffScreen -carla-rpc-port=2200 &
-sleep 15
+ls results/paper_csv/
+head -n 8 results/paper_csv/02_main_transfer_A_L_C.csv
+head -n 8 results/paper_csv/10_result_provenance.csv
+head -n 8 results/CaST_supplement_snapshot/00_file_status.csv
 ```
 
-With GUI:
+The Town04 ablation CSV is an **aggregate-only** source in the released collection; direct intervention-label precision/recall, learning-curve claims, and complete across-seed inference require additional raw evidence.
+
+## 6. Setup and verification
+
+**Platform used:** Ubuntu + CARLA **0.9.15**, a Python environment with PyTorch/NumPy and the CARLA Python API; a GPU is recommended for camera perception. Exact wheel compatibility depends on the local CARLA distribution. The repository does **not** include a pinned, tested `requirements.txt` or a bundled simulator installation. Install these separately and check the local environment before running costly experiments.
 
 ```bash
-./CarlaUE4.sh -opengl -quality-level=Low -windowed \
-  -ResX=800 -ResY=600 -carla-rpc-port=2200 -nosound &
-sleep 15
+# From the repository root
+cd ~/Desktop/CaST_publish
+
+# Replace with your own environment path if different
+PYTHON=/home/umb/miniconda3/envs/safe/bin/python
+
+# Confirm CLI and run the model-only CPU checks (does not start CARLA)
+"$PYTHON" code/car.py --help
+"$PYTHON" code/car_eval.py --help
+"$PYTHON" code/car.py --learning-smoke-test --cpu
 ```
 
-### 2. Train the source policy (paper-faithful, 500k steps)
+The repository places source code under `code/`, unlike the original experiment directories where the scripts and `car.py` lived together. **Run the launchers in an environment whose relative paths have been checked**. A copied `.sh` file may still refer to the original B20 folder layout and is not a portable one-command reproduction script.
 
-Uses random spawn (`--spawn-index -1`) to prevent overfitting. Fixed spawn causes 97% collision rate as the policy overfits to a single road segment and deterministically hits the same NPC after alpha collapses.
+### Checkpoint inventory
+
+The archive has six CaST target adaptation checkpoints:
+
+```text
+checkpoints/seed0/A/A__cast__B20__s0__sampler-cast/agent.pt
+checkpoints/seed0/L/L__cast__B20__s0__sampler-cast/agent.pt
+checkpoints/seed0/C/C__cast__B20__s0__sampler-cast/agent.pt
+checkpoints/seed1/A/A__cast__B20__s1__sampler-cast/agent.pt
+checkpoints/seed1/L/L__cast__B20__s1__sampler-cast/agent.pt
+checkpoints/seed1/C/C__cast__B20__s1__sampler-cast/agent.pt
+```
+
+Weights are tracked through Git LFS. After cloning, use `git lfs pull` before loading a checkpoint. Each `.pt` is a **state dictionary bundle**, not a complete standalone evaluation environment; `SourceArtifacts` also expects compatible source actor, perception weights, banks and calibration metadata.
 
 ```bash
-python3 -u car.py \
-  --mode train \
-  --host localhost --port 2200 --tm-port 8001 \
-  --train-town Town10HD_Opt \
-  --spawn-index -1 \
-  --train-goal-index -1 \
-  --train-steps 500000 \
-  --train-npc-min 8 --train-npc-max 20 \
-  --source-weather night_rain_fog \
-  --out-dir ./output \
-  --maml-warmup-batches 10 \
-  --start-steps 2000 --update-after 1000 \
-  --save-every-steps 5000 \
-  --debug 2>&1 | tee ./output/train_log.txt
+# Confirm LFS objects were fetched and verify saved hashes
+git lfs pull
+git lfs ls-files
+python - <<'PY'
+import csv, hashlib
+from pathlib import Path
+manifest = Path('checkpoints/CHECKPOINT_INDEX.csv')
+with manifest.open(newline='') as f:
+    for row in csv.DictReader(f):
+        print(row.get('seed'), row.get('suite'), row.get('sha256', '')[:16])
+PY
 ```
 
-### 3. Evaluate on Town05 (zero-shot)
+The manifest stores the original training paths for provenance; paths on another machine will differ. Run **frozen evaluations only on completed, protocol-compatible checkpoints**. The evaluator checks training settings such as steering/light input, and new configuration values should not be silently substituted for the saved ones.
+
+## 7. Running a new experiment
+
+For a **new run**, use the checked-in training interface with a **fresh output directory** and explicit ports. The example below describes CLI structure; it is **not** a command that reproduces the released B20 tables without their source/perception stages and matching config.
 
 ```bash
-python3 -u car.py \
-  --mode eval \
-  --host localhost --port 2200 \
-  --target-town Town05 \
-  --target-weather mixed \
-  --spawn-index 0 \
-  --eval-episodes 20 \
-  --checkpoint ./output/models/source_agent.pt \
-  --out-dir ./output \
-  --target-goal-index -1 \
-  --npc-min 8 --npc-max 15 \
-  --debug
+PYTHON=/home/umb/miniconda3/envs/safe/bin/python
+CARLA="$HOME/carla/CarlaUE4.sh -RenderOffScreen -quality-level=Low -nosound -carla-rpc-port=2200"
+
+"$PYTHON" code/car.py \
+  --profile paper \
+  --stages perception,source,pilot \
+  --perception rgbd \
+  --seed 0 --budget 20 \
+  --route-length 200 \
+  --port 2200 --tm-port 8000 \
+  --out-dir "$HOME/Desktop/cast_new_experiment" \
+  --carla-cmd "$CARLA"
 ```
 
-### 4. Evaluate on Town10HD with a 500 m route
+For the **released 3-shift B20 protocol**, the original runners are archived under `script/`. Their source and evaluation destinations were independent directories, and the evaluator was invoked once per selected suite/town. Before using a runner, open it and verify `PROJECT`, `OLD`, `TRAIN_OUT`, `EVAL_OUT`, `PYTHON`, `CARLA_SH`, `PORT`, `TM_PORT`, `SUITES`, and `EVAL_TOWN`. A single `agent.pt` cannot replace an initialized experiment directory.
 
-```bash
-python3 -u car.py \
-  --mode eval \
-  --host localhost --port 2200 \
-  --target-town Town10HD_Opt \
-  --target-weather mixed \
-  --spawn-index -1 \
-  --eval-episodes 20 \
-  --checkpoint ./output/models/source_agent.pt \
-  --out-dir ./output \
-  --target-goal-index -1 \
-  --route-target-length 500 \
-  --npc-min 8 --npc-max 15 \
-  --no-rendering \
-  --debug 2>&1 | tee ./output/eval_500m_npc_log.txt
+**Safe workflow:** validate the local CARLA maps and sensor settings → produce or restore source artifacts → initialize independent adaptation run directories → train the four methods to their B20 markers → evaluate the planned held-out routes without gradients → audit per-town JSON keys and route counts → regenerate CSVs. Do not write to the archived experiment directories when trying a new hyperparameter.
+
+## 8. Reading the evaluation files
+
+The legacy evaluator writes route JSON files at positions like:
+
+```text
+<eval-out>/runs/<run-id>/eval_A__Town03.json
+<eval-out>/runs/<run-id>/eval_L__Town01.json
+<eval-out>/runs/<run-id>/eval_C__Town05.json
 ```
 
-### 5. Cross-town evaluation on Town02
+Each route record contains its route identifier and driving condition as well as score and safety fields. A **matched comparison** requires the same `(route, conditions)` keys across all four methods for a given suite/town. Do not compare unpaired runs by assuming the same row number is the same route.
 
-```bash
-python3 -u car.py \
-  --mode eval \
-  --host localhost --port 2200 \
-  --target-town Town02 \
-  --target-weather mixed \
-  --spawn-index 0 \
-  --eval-episodes 20 \
-  --checkpoint ./output/models/source_agent.pt \
-  --out-dir ./output \
-  --target-goal-index -1 \
-  --npc-min 8 --npc-max 15 \
-  --debug
+```python
+# Minimal audit of one already exported town (supply actual paths)
+import json
+from pathlib import Path
+
+files = [Path(p) for p in [
+    '/path/to/cast/eval_A__Town03.json',
+    '/path/to/finetune/eval_A__Town03.json',
+    '/path/to/uniform/eval_A__Town03.json',
+    '/path/to/openset/eval_A__Town03.json',
+]]
+keys = []
+for file in files:
+    rows = json.loads(file.read_text())['routes']
+    k = {(str(r['route']), json.dumps(r['conditions'], sort_keys=True)) for r in rows}
+    assert len(k) == len(rows), f'duplicate route key: {file}'
+    keys.append(k)
+assert all(k == keys[0] for k in keys[1:]), 'route/condition mismatch'
+print(f'MATCHED: {len(keys[0])} routes per method')
 ```
 
-### 6. Few-shot domain adaptation (adapt mode)
+For every score, report the **suite, town set, seed, budget, route count, shield setting, and observation interface**. Report missing and partial files as such. The number of evaluation routes is not the number of independent training seeds.
 
-Loads source checkpoint, runs MAML warm-up on the target domain, then fine-tunes with the causal-semantic transfer loss while simultaneously collecting source-domain experience.
+## 9. Figures and demonstrations
 
-```bash
-python3 -u car.py \
-  --mode adapt \
-  --host localhost --port 2200 \
-  --train-town Town10HD_Opt \
-  --target-town Town02 \
-  --source-weather night_rain_fog \
-  --target-weather mixed \
-  --spawn-index 0 \
-  --source-checkpoint ./output/models/source_agent.pt \
-  --adapt-steps 50000 \
-  --adapt-episodes 100 \
-  --maml-warmup-batches 10 \
-  --npc-min 8 --npc-max 15 \
-  --train-npc-min 8 --train-npc-max 20 \
-  --out-dir ./output \
-  --debug
-```
+| Asset | Description |
+|:--|:--|
+| `figures/cast-framework.pdf` | System overview: perception → support → interventions → adaptation |
+| `figures/support_map.pdf` | Interaction-level transfer decision map |
+| `figures/supp_ablation.pdf` | Town04 component ablation visualization |
+| `figures/supp_coverage_bins.pdf` | Coverage-bin failure diagnostic |
+| `graphs/validation_*.pdf` | Driving-score, weather, safety and ablation summaries |
+| `screenshot/`, `video/` | Example CARLA execution outputs, not substitutes for route metrics |
 
----
+<a href="video/1.mp4">Video 1</a> · <a href="video/2.mp4">Video 2</a> · <a href="video/3.mp4">Video 3</a>
 
-## Key Flags
+## 10. Reproducibility boundaries and limitations
 
-| Flag | Default | Description |
-|---|---|---|
-| `--mode` | `eval` | `train` / `eval` / `adapt` / `policy` |
-| `--train-town` | `Town10HD_Opt` | Source training map |
-| `--target-town` | `Town02` | Evaluation or transfer target map |
-| `--spawn-index` | `0` | `-1` for random spawn per episode (required for training) |
-| `--train-goal-index` | `-1` | Source route goal (`-1` = auto-route) |
-| `--target-goal-index` | `-1` | Target route goal (`-1` = auto-route, safe for all towns) |
-| `--route-target-length` | `200` | Route arc-length in metres; scales all thresholds proportionally |
-| `--npc-min` / `--npc-max` | `0` / `2` | Eval NPC count range |
-| `--train-npc-min` / `--train-npc-max` | `8` / `20` | Training NPC count range |
-| `--source-weather` | `night_rain_fog` | Source-domain weather preset |
-| `--target-weather` | `mixed` | Target-domain weather preset |
-| `--train-steps` | `500000` | Total environment steps for source training |
-| `--adapt-steps` | `50000` | Max steps for target adaptation |
-| `--adapt-episodes` | `100` | Max episode cap for adaptation |
-| `--maml-warmup-batches` | `2` | Warm-up batches for MAML initialisation |
-| `--start-steps` | `5000` | Steps of random exploration before policy updates begin |
-| `--update-after` | `2048` | Steps before first gradient update |
-| `--save-every-steps` | `10000` | Checkpoint save frequency |
-| `--no-rendering` | off | Disable CARLA renderer (faster, headless) |
-| `--use-safety-shield` | off | Enable hard rule-based safety overrides (not used in paper) |
-| `--disable-auto-beta0` | off | Disable automatic beta0 selection from {0.5, 1.0} |
-| `--cpu` | off | Force CPU inference |
-| `--debug` | off | Enable per-step and per-episode console output |
+The codebase includes experimental branches beyond the evaluated paper configuration. Specific limitations matter when using it as a reference implementation:
 
----
+- **Partial evaluations:** archived seed-1 results do not establish complete two-seed A/L/C statistics. Existing seed-1 CaST checkpoint files alone do not mean four-method matched evaluations are complete.
+- **Source dependencies:** the repository checkpoint subset does not include every detector, frozen-source, replay, and support-bank artifact. Full offline reproduction from the six `.pt` files alone is not supported.
+- **Implementation versus idealized training order:** bank acceptance currently examines the adaptation episode's measured safety, not a second, independently driven validation rollout.
+- **Alignment and fusion:** the current `action` metric and `mean` fusion differ from an exclusively KL-based alignment or additive uncertainty description. Log these choices explicitly.
+- **Causal evidence:** simulator interventions define training signals, but reported aggregate driving outcomes alone do not validate causal-head accuracy or shortcut removal.
+- **Perception and assisted settings:** map-assisted traffic-light association, `v2i`, ground-truth tokens, target expert labels and shielded evaluation alter the observation/supervision protocol; distinguish them from unassisted camera-based results.
+- **Statistical scope:** route-level uncertainty estimates are correlated within a policy run; do not present them as between-seed confidence intervals.
 
-## Simulation Images
+We welcome comparisons that isolate these components under the same adaptation budget and **identical held-out route/condition keys**.
 
-<p align="justify">
-Screenshots captured live from the <b>CarlaUE4</b> spectator camera during training and evaluation on <b>Town10HD</b>, the source training domain. The adversarial weather regime is active in all three: heavy rain, dense fog, and nighttime lighting (cloudiness 90%, precipitation 90%, fog density 40%, sun altitude −25°). The ego vehicle is the red Tesla Model 3. NPC traffic ranges from 8 to 20 per episode during training and 8 to 15 during evaluation. The spectator camera follows the ego 8 m behind at 4 m elevation with −15° pitch, updated every `env.step()` via `_snap_spectator_to_ego()`.
-</p>
+## 11. Citation and use
 
-<p align="center">
-  <img src="./screenshot/1.png" width="32%" alt="Wet urban intersection at night"/>
-  &nbsp;
-  <img src="./screenshot/2.png" width="32%" alt="Multi-lane straight road with traffic signals"/>
-  &nbsp;
-  <img src="./screenshot/3.png" width="32%" alt="Left-curve near commercial district"/>
-</p>
-
-<p align="justify">
-<b>Left: Wet urban intersection, Park Avenue (training episode).</b>
-The ego holds lane centre while navigating toward a signalised intersection with NPC vehicles scattered across lanes. The red-light compliance term rho_t in the safety reward activates when the signal ahead is red. Corridor membership muA is reduced by combined fog and NPC density, tightening the admissible lane deviation window automatically.
-</p>
-
-<p align="justify">
-<b>Centre: Multi-lane straight road with active traffic signals (evaluation episode).</b>
-The ego decelerates through a sweeping left turn on a wet road. Curvature-aware target speed scheduling (<code>target_speed - curve_speed_penalty * curv_norm</code>) reduces desired speed proportionally to road curvature. The comfort penalty suppresses oscillatory steering and the route CTE remains within the corridor. The double-yellow centre line and pavement kerb confirm correct lane adherence.
-</p>
-
-<p align="justify">
-<b>Right: Left-curve near commercial district, palm-tree boulevard (evaluation episode).</b>
-The ego approaches a cross-road junction with multiple NPC vehicles crossing from the left. The rain-soaked reflective road surface and active cross-traffic exercise the proximity reward psi_P and TTC-based braking inside <code>_policy_passthrough_filter()</code>. Observation noise is elevated here: entity miss rate is approximately 30–40% at this range under this fog level.
-</p>
-
----
-
-## Simulation Videos
-
-<p align="justify">
-Recorded during closed-loop <b>evaluation</b> runs in CARLA 0.9.15. Each clip shows the ego Tesla Model 3 completing part of its ~200 m closed-loop route on <b>Town10HD</b> under the adversarial night/rain/fog weather. The agent runs fully deterministic inference (`agent.act(obs, deterministic=True)`) with no safety shield active. The spectator camera follows the ego via `_snap_spectator_to_ego()` called every step.
-</p>
-
-<p align="center">
-  <a href="./video/1.mp4"><img src="./video/1.png" width="30%" alt="01. Intersection navigation"/></a>
-  &nbsp;&nbsp;
-  <a href="./video/2.mp4"><img src="./video/2.png" width="30%" alt="02. Straight road with traffic signals"/></a>
-  &nbsp;&nbsp;
-  <a href="./video/3.mp4"><img src="./video/3.png" width="30%" alt="03. Curve handling, low visibility"/></a>
-</p>
-
-<p align="center">
-  <a href="./video/1.mp4"><b>01. Intersection navigation</b></a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="./video/2.mp4"><b>02. Straight road with traffic signals</b></a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="./video/3.mp4"><b>03. Curve handling, low visibility</b></a>
-</p>
-
-<p align="justify">
-<b>Video 01: Intersection with NPC cross-traffic.</b> The ego navigates a busy intersection with NPC vehicles crossing from the left. When the traffic light turns red, the agent decelerates well before the stop line, the red-light compliance term rho_t in the safety reward and the TTC-based caution logic inside `_get_min_vehicle_ttc()` both activate. Once the intersection clears, the ego re-accelerates smoothly to target speed (18 km/h) with no overshoot, held in check by the throttle and steer rate limiters (±0.06/step, ±0.08/step).
-</p>
-
-<p align="justify">
-<b>Video 02: Signalised straight road.</b> The ego maintains lane centre along a multi-lane straight under active traffic signals and wet-road conditions. The uncertainty gate keeps policy entropy low (high sigma_bar from reduced visibility), producing steady, low-variance throttle and steer outputs. Route CTE stays within the corridor throughout.
-</p>
-
-<p align="justify">
-<b>Video 03: Curved road, near-zero visibility.</b> The ego handles a sharp curve under dense fog with near-zero forward visibility. Rising epistemic uncertainty from the critic ensemble suppresses exploration, causing the agent to decelerate and tighten steering gradually rather than commit to an aggressive line, the cautious behaviour predicted by beta(sigma_bar) = beta0 * (1 - sigma_bar).
-</p>
-
----
-
-## Graphs and Visual Results
-
-<p align="center">
-  <img src="./graphs/state_stability.png" width="48%" alt="State Stability — CTE and Heading Error"/>
-  &nbsp;
-  <img src="./graphs/state_route.png" width="48%" alt="Route Completion Metrics"/>
-</p>
-
-<p align="justify">
-<b>Left: Ego-Relational State Stability (Sec. 4.2).</b> Cross-Track Error (CTE, blue) and heading error (green) on Town10HD. The ego-centric relational graph with uncertainty-weighted attention reduces CTE to 0.65 (28.6% below ST-P3) and heading error to 0.31 (47.5% below ST-P3), reflecting tighter lane geometry and ego dynamics fusion in the decision state.
-</p>
-
-<p align="justify">
-<b>Right: Route Completion Metrics (Sec. 4.2).</b> Off-road percentage (blue, lower is better) and goal completion rate (orange, higher is better) across all methods. The causal relational state cuts off-road from 10.8% (ST-P3) to 4.1%, a 62% reduction, while lifting goal completion to 79.5%, confirming that uncertainty-weighted attention improves both lane-keeping and navigation success simultaneously.
-</p>
-
-<p align="center">
-  <img src="./graphs/reward_comparison.png" width="48%" alt="Reward Comparison"/>
-  &nbsp;
-  <img src="./graphs/uncertainty_metrics.png" width="48%" alt="Uncertainty-Gated Exploration Metrics"/>
-</p>
-
-<p align="justify">
-<b>Left: Reward Comparison (Sec. 4.3).</b> Average episodic reward on Town10HD. The differentiable multi-objective reward (Eqs. 9–13) reaches 265.3, improving 45.1% over the nearest baseline RaSc (182.9) and 69.6% over ST-P3 (156.4), with smoother learning curves due to continuous surrogates replacing sparse event penalties.
-</p>
-
-<p align="justify">
-<b>Right: Uncertainty-Gated Exploration (Sec. 4.4).</b> Exploration variance (blue, lower), collision rate ×100 (red, lower), and stability (green, higher). The joint aleatoric–epistemic entropy gate achieves the lowest variance (0.62) and collision rate (0.60 ×100 = 0.006/km) while reaching the highest stability score (0.91), validating that sigma_bar-driven entropy modulation produces a safer yet not overly conservative policy.
-</p>
-
----
-
-## Closed-Loop Route Coverage
-
-<p align="center">
-  <img src="./close_loop.png" width="55%" alt="Closed-Loop Route Coverage Map"/>
-</p>
-
-<p align="justify">
-Closed-loop trajectory coverage on Town10HD (source domain). Blue trajectories indicate successful runs; red indicates unsuccessful. Dashed lines show planned routes.
-</p>
-
----
-
-## Key Results
-
-Closed-loop evaluation in CARLA 0.9.15 across Town10HD (source), Town02, and Town05 (targets) under adverse weather.
-
-| Map / Setting | SR (%) | RC (%) | DS | IS | Coll./km | Off/km | TO/km |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Town10HD (source training) | 91.2 | 94.1 | 94.1 | 1.00 | 0.000 | 0.000 | 0.000 |
-| Town05 (zero-shot transfer) | 100.0 | 94.6 | 94.6 | 1.00 | 0.000 | 0.000 | 0.000 |
-| Town02, Policy Learning | 72.1 | 75.2 | 188.6 | 0.88 | 0.007 | 0.005 | 0.003 |
-| Town02, Source Domain | 80.3 | 82.6 | 205.7 | 0.92 | 0.006 | 0.004 | 0.002 |
-| Town02, **Target (full transfer)** | **85.0** | **84.1** | **214.3** | **0.94** | **0.005** | **0.003** | **0.001** |
-
-**SR** = Success Rate, **RC** = Route Completion, **DS** = Driving Score, **IS** = Infraction Score.  
-Town05 zero-shot: CTE = 0.192 m, heading error = 0.021 rad. Town10HD source: reward 265.3, CTE 0.65.
-
----
-
-## Troubleshooting
-
-**`import carla` fails**
-
-```bash
-export CARLA_ROOT=~/CARLA_0.9.15
-export PYTHONPATH=$PYTHONPATH:~/CARLA_0.9.15/PythonAPI/carla/dist/carla-0.9.15-py3.10-linux-x86_64.egg
-```
-
-`car.py` auto-discovers the CARLA egg by scanning `$CARLA_ROOT`, `~/carla`, `~/CARLA_0.9.15`, and related paths — see `_setup_carla_pythonapi()` for the full search order.
-
-**CARLA server crashes with many NPCs:** Add `--no-rendering`. For headless training this is always recommended.
-
-**Town02 route planner warning:** Reduce route length: `--route-target-length 150`. Town02 is a smaller map and 200 m routes may not be reachable from all spawn points.
-
-**Alpha collapses during training:** `log_alpha` is clamped to `min=log(0.01)` automatically after every alpha update. If entropy is very low early on, increase `--start-steps` to ensure a well-populated replay buffer before updates begin.
-
-**Stuck ego during evaluation:** Stuck detection fires after 18 steps below 1 km/h and applies forced throttle 0.42 for 25 steps. If stucks persist, reduce `--npc-max` or increase `--route-target-length`.
-
-**Reset fails repeatedly:** `robust_reset()` retries up to 5 times with exponential back-off (2 s to 20 s), rebuilding the environment object if needed. Check that the CARLA server process is still alive.
-
-
----
-
-## Acknowledgements
-
-<p align="justify">
-This work was supported in part by the National Natural Science Foundation of China (NSFC) under Grants 62473264, 62203134, 62502322, 62372307, and U2001207; in part by the National Natural Science Funds for Distinguished Young Scholars under Grant 62325307; in part by the Natural Science Foundation of Guangdong Province under Grants 2023B1515120038 and 2024A1515011691; in part by the Shenzhen Science and Technology Innovation Commission / Shenzhen Science and Technology Program / Shenzhen Science and Technology Foundation under Grants KCXFZ20230731094001003, RCYX20231211090129039, JCYJ20230808105906014; in part by the Key Research and Development Program in Xinjiang Uygur Autonomous Region under Grant 2025B04019-001; in part by the Guangdong Provincial Key Lab of Integrated Communication, Sensing and Computation for Ubiquitous Internet of Things under Grant 2023B1212010007; and in part by the Project of DEGP under Grant 2023KCXTD042. This work was also supported by the Intelligent Computing Center of Shenzhen University. 
-</p>
-
----
-
-## Citation
+If you use this repository, cite the associated paper once its public bibliographic record is available. A provisional BibTeX entry can be adapted after acceptance/publication:
 
 ```bibtex
-@InProceedings{Borhan_2026_CVPR,
-    author    = {Borhan, Uddin Md. and Raza, Arif and Lin, Zhiliang and Wang, Lu and Li, Jianqiang and Chen, Jie},
-    title     = {Reliable Policy Transfer for Safety-Aware End-to-End Driving with Deep Reinforcement Learning},
-    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month     = {June},
-    year      = {2026},
-    pages     = {32134-32143}
+@misc{cast_policy_transfer,
+  title  = {Transfer What Is Caused and Covered: Policy Transfer for Safe End-to-End Driving},
+  note   = {Research manuscript and associated implementation},
+  url    = {https://github.com/umborhan/CaST}
 }
+```
+
+This entry deliberately does **not** claim an acceptance venue, DOI, or publication year. For use and redistribution conditions, see [`LICENSE`](LICENSE). CARLA and third-party packages retain their respective licenses.
