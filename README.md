@@ -1,6 +1,6 @@
 # Transfer What Is Caused and Covered: Policy Transfer for Safe End-to-End Driving
 
-**CaST — Causal-Support Transfer** · CARLA 0.9.15 · PyTorch · RGB-D · Soft Actor-Critic (SAC)
+**Causal-Support Transfer (CaST)** · CARLA 0.9.15 · PyTorch · RGB-D · Soft Actor-Critic (SAC)
 
 CaST adapts a driving policy across appearance and road-layout shifts by separating **causal relevance** from **source coverage**. Each interaction is assigned an estimated effect `ĉᵢ` and a support rank `ρᵢ`. The pair determines whether to preserve source behavior, retain uncertainty, or reduce dependence on an irrelevant cue. Target episodes are selected using uncovered causal mass.
 
