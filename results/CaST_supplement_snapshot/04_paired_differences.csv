@@ -1,0 +1,13 @@
+suite,seed,scope,baseline,matched_N,CaST_minus_baseline_DS,CaST_minus_baseline_SR_pp,wins,losses,ties
+A,0,selected,SAC fine-tuning,40,-7.6469,-32.5,15,25,0
+A,0,selected,Uniform alignment,40,-2.9068,-25.0,15,25,0
+A,0,selected,Open-set entropy,40,-2.6677,-20.0,15,25,0
+L,0,selected,SAC fine-tuning,30,-3.4821,3.3333,19,11,0
+L,0,selected,Uniform alignment,30,-3.5101,-3.3333,13,17,0
+L,0,selected,Open-set entropy,30,-0.9406,-10.0,19,11,0
+C,0,selected,SAC fine-tuning,60,-2.806,5.0,31,29,0
+C,0,selected,Uniform alignment,60,-3.2254,1.6667,34,26,0
+C,0,selected,Open-set entropy,60,-1.3803,0.0,32,28,0
+C,0,four_town,SAC fine-tuning,80,-4.0285,1.25,41,39,0
+C,0,four_town,Uniform alignment,80,-2.1265,6.25,45,34,1
+C,0,four_town,Open-set entropy,80,-1.5116,0.0,42,38,0

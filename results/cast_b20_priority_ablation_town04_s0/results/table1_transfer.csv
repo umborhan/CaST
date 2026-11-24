@@ -1,0 +1,1 @@
+suite,method,n_seeds,DS,DS_ci_lo,DS_ci_hi,DS_ci_halfwidth,SR,coll_per_km,RC,IS,mean_min_ttc_s,cte_m,red_per_km,p_wilcoxon_vs_uniform,p_holm,significant

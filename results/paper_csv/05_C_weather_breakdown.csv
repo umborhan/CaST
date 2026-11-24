@@ -1,0 +1,17 @@
+scope,weather,method,seed,budget,n_routes,successes,SR_pct,DS,RC_pct,collisions,total_km,coll_per_km,red_lights,red_per_km,mean_min_TTC_capped10_s,mean_CTE_m
+combined_four_town_weather,fog_dense,CaST (ours),0,20,23,15,65.21739,79.37095,79.37095,0,3.65192,0.0,0,0.0,1.26696,0.03594
+combined_four_town_weather,glare,CaST (ours),0,20,18,17,94.44444,97.20262,97.20262,0,3.49348,0.0,0,0.0,1.27036,0.02553
+combined_four_town_weather,night,CaST (ours),0,20,20,18,90.0,95.0899,96.89543,1,3.87345,0.25817,0,0.0,1.34699,0.02727
+combined_four_town_weather,rain_heavy,CaST (ours),0,20,19,17,89.47368,91.52917,91.52917,0,3.47537,0.0,0,0.0,1.00121,0.02926
+combined_four_town_weather,fog_dense,SAC fine-tuning,0,20,23,16,69.56522,88.75561,89.4746,1,4.11704,0.24289,0,0.0,1.15918,0.04101
+combined_four_town_weather,glare,SAC fine-tuning,0,20,18,15,83.33333,97.03287,97.03287,0,3.48746,0.0,0,0.0,1.36653,0.02771
+combined_four_town_weather,night,SAC fine-tuning,0,20,20,18,90.0,97.15919,97.15919,0,3.88402,0.0,0,0.0,1.15031,0.02743
+combined_four_town_weather,rain_heavy,SAC fine-tuning,0,20,19,17,89.47368,95.11348,95.11348,0,3.61149,0.0,0,0.0,0.99778,0.03202
+combined_four_town_weather,fog_dense,Uniform alignment,0,20,23,14,60.86957,89.10667,89.10667,0,4.10051,0.0,0,0.0,1.01947,0.04914
+combined_four_town_weather,glare,Uniform alignment,0,20,18,15,83.33333,91.06983,92.27296,1,3.31676,0.3015,0,0.0,1.22657,0.02357
+combined_four_town_weather,night,Uniform alignment,0,20,20,16,80.0,96.59217,96.59217,0,3.86188,0.0,0,0.0,1.22162,0.03421
+combined_four_town_weather,rain_heavy,Uniform alignment,0,20,19,17,89.47368,92.92606,94.4557,1,3.58628,0.27884,0,0.0,0.98816,0.0334
+combined_four_town_weather,fog_dense,Open-set entropy,0,20,23,13,56.52174,82.56725,83.57615,1,3.84562,0.26004,0,0.0,1.13347,0.03829
+combined_four_town_weather,glare,Open-set entropy,0,20,18,17,94.44444,96.09825,96.09825,0,3.45447,0.0,0,0.0,1.24323,0.0283
+combined_four_town_weather,night,Open-set entropy,0,20,20,19,95.0,93.58787,93.58787,0,3.74185,0.0,0,0.0,1.24641,0.02624
+combined_four_town_weather,rain_heavy,Open-set entropy,0,20,19,18,94.73684,96.6521,96.6521,0,3.66999,0.0,0,0.0,1.06622,0.03159

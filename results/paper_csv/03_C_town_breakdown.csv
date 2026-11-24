@@ -1,0 +1,17 @@
+scope,town,method,seed,budget,n_routes,successes,SR_pct,DS,RC_pct,collisions,total_km,coll_per_km,red_lights,red_per_km,mean_min_TTC_capped10_s,mean_CTE_m
+combined_single_town,Town01,CaST (ours),0,20,20,18,90.0,91.85508,91.85508,0,3.67029,0.0,0,0.0,0.87314,0.02619
+combined_single_town,Town02,CaST (ours),0,20,20,15,75.0,88.42891,88.42891,0,3.52824,0.0,0,0.0,0.76118,0.04221
+combined_single_town,Town04,CaST (ours),0,20,20,18,90.0,91.90104,91.90104,0,3.6767,0.0,0,0.0,1.9328,0.03196
+combined_single_town,Town05,CaST (ours),0,20,20,16,80.0,88.61654,90.42207,1,3.619,0.27632,0,0.0,1.33135,0.01902
+combined_single_town,Town01,SAC fine-tuning,0,20,20,15,75.0,91.24115,92.06798,1,3.67951,0.27177,0,0.0,0.74118,0.02561
+combined_single_town,Town02,SAC fine-tuning,0,20,20,17,85.0,96.12472,96.12472,0,3.83695,0.0,0,0.0,0.79156,0.05228
+combined_single_town,Town04,SAC fine-tuning,0,20,20,18,90.0,94.88782,94.88782,0,3.795,0.0,0,0.0,1.85594,0.03023
+combined_single_town,Town05,SAC fine-tuning,0,20,20,16,80.0,94.66185,94.66185,0,3.78855,0.0,0,0.0,1.27244,0.02182
+combined_single_town,Town01,Uniform alignment,0,20,20,16,80.0,91.8952,93.34835,1,3.73094,0.26803,0,0.0,0.86507,0.02649
+combined_single_town,Town02,Uniform alignment,0,20,20,11,55.0,87.2585,88.34131,1,3.52699,0.28353,0,0.0,0.69874,0.06242
+combined_single_town,Town04,Uniform alignment,0,20,20,17,85.0,94.01979,94.01979,0,3.7602,0.0,0,0.0,1.67262,0.033
+combined_single_town,Town05,Uniform alignment,0,20,20,18,90.0,96.13396,96.13396,0,3.8473,0.0,0,0.0,1.20025,0.02176
+combined_single_town,Town01,Open-set entropy,0,20,20,16,80.0,89.78291,89.78291,0,3.58867,0.0,0,0.0,0.88813,0.0253
+combined_single_town,Town02,Open-set entropy,0,20,20,15,75.0,90.33466,91.49489,1,3.65169,0.27385,0,0.0,0.71757,0.04822
+combined_single_town,Town04,Open-set entropy,0,20,20,17,85.0,89.69433,89.69433,0,3.588,0.0,0,0.0,1.86136,0.02976
+combined_single_town,Town05,Open-set entropy,0,20,20,19,95.0,97.03623,97.03623,0,3.88359,0.0,0,0.0,1.21465,0.02248

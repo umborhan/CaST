@@ -1,0 +1,11 @@
+cast_b20_runner/run_b20_s0.sh
+cast_b20_runner/run_cast_b20.sh
+cast_b20_s0_3shift_runner/evaluate_A_B20_s0.sh
+cast_b20_s0_3shift_runner/run_b20_s0.sh
+CaST_B20_s0_3shift_runner/run_b20_s0.sh
+cast_b20_s0_3shift_runner/run_b20_s1.sh
+cast_b20_s1_3shift_runner/run_b20_s1.sh
+cast_b20_seed0_runner/run_b20_s0.sh
+CaST_priority_ablation_Town04_s0/run_priority_ablation_s0.sh
+CaST_tables_s0/run_cast_tables_s0.sh
+run_cast_b20_fixed.sh

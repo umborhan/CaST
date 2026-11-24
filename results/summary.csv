@@ -1,0 +1,13 @@
+town,policy,completed,metric_revision,requested,complete,successes,success_rate_pct,penalty_free_success_rate_pct,unassisted_success_rate_pct,clean_unassisted_success_rate_pct,mean_RC,mean_DS,collisions,collisions_per_km,red_lights,stuck,off_route,jam_removed,safety_interventions
+Town10HD,adapted,20,front-bumper-stop-line-crossing-v2,20,True,19,95.0,95.0,0.0,0.0,96.56604734157058,95.18607293013193,1,0.25876242853422826,0,0,0,114,16568
+Town10HD,source,20,front-bumper-stop-line-crossing-v2,20,True,20,100.0,100.0,0.0,0.0,98.01639672648636,98.01639672648636,0,0.0,0,0,0,4,14377
+Town01,adapted,20,front-bumper-stop-line-crossing-v2,20,True,18,90.0,90.0,0.0,0.0,95.85846589569772,95.85846589569772,0,0.0,0,0,0,90,19772
+Town01,source,20,front-bumper-stop-line-crossing-v2,20,True,20,100.0,100.0,0.0,0.0,98.01917669652565,98.01917669652565,0,0.0,0,0,0,2,14805
+Town02,adapted,20,front-bumper-stop-line-crossing-v2,20,True,15,75.0,75.0,0.0,0.0,91.54898895161742,91.54898895161742,0,0.0,0,0,0,92,26173
+Town02,source,20,front-bumper-stop-line-crossing-v2,20,True,17,85.0,85.0,0.0,0.0,95.48828386028279,95.48828386028279,0,0.0,0,0,0,2,24050
+Town03,adapted,20,front-bumper-stop-line-crossing-v2,20,True,20,100.0,100.0,0.0,0.0,98.01524175522188,98.01524175522188,0,0.0,0,0,0,96,15732
+Town03,source,20,front-bumper-stop-line-crossing-v2,20,True,20,100.0,100.0,0.0,0.0,98.02245237411684,98.02245237411684,0,0.0,0,0,0,8,16293
+Town04,adapted,20,front-bumper-stop-line-crossing-v2,20,True,20,100.0,100.0,0.0,0.0,98.01502568615058,98.01502568615058,0,0.0,0,0,0,64,2007
+Town04,source,20,front-bumper-stop-line-crossing-v2,20,True,20,100.0,100.0,0.0,0.0,98.01624979045911,98.01624979045911,0,0.0,0,0,0,4,2344
+Town05,adapted,20,front-bumper-stop-line-crossing-v2,20,True,18,90.0,90.0,0.0,0.0,96.14176165226836,96.14176165226836,0,0.0,0,0,0,124,18751
+Town05,source,20,front-bumper-stop-line-crossing-v2,20,True,19,95.0,95.0,0.0,0.0,96.9105797970204,96.9105797970204,0,0.0,0,0,0,6,18729

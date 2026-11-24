@@ -1,0 +1,5 @@
+scope,method,seed,budget,n_routes,successes,SR_pct,DS,RC_pct,collisions,total_km,coll_per_km,red_lights,red_per_km,mean_min_TTC_capped10_s,mean_CTE_m
+combined_four_town,CaST (ours),0,20,80,67,83.75,90.20039,90.65177,1,14.49423,0.06899,0,0.0,1.22462,0.02984
+combined_four_town,SAC fine-tuning,0,20,80,66,82.5,94.22888,94.43559,1,15.10001,0.06623,0,0.0,1.16528,0.03249
+combined_four_town,Uniform alignment,0,20,80,62,77.5,92.32686,92.96085,2,14.86543,0.13454,0,0.0,1.10917,0.03592
+combined_four_town,Open-set entropy,0,20,80,67,83.75,91.71203,92.00209,1,14.71194,0.06797,0,0.0,1.17043,0.03144

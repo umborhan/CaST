@@ -1,0 +1,4 @@
+suite,seed,baseline,matched_routes,CaST_minus_baseline_mean_DS,CaST_minus_baseline_SR_percentage_points,CaST_route_DS_wins,CaST_route_DS_losses,DS_ties
+C,0,SAC fine-tuning,80,-4.02849,1.25,41,39,0
+C,0,Uniform alignment,80,-2.12647,6.25,45,34,1
+C,0,Open-set entropy,80,-1.51164,0,42,38,0

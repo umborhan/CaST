@@ -1,0 +1,17 @@
+suite,seed,scope,towns,method,n_towns,source_root,N,DS,SR_pct,RC_pct,IS,Collisions_per_km,mean_min_TTC_capped10_s,mean_CTE_m,km_total,collisions_total,n_valid_TTC,n_valid_CTE
+A,0,selected,Town03+Town10HD,CaST,2,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_A_parallel,40,88.0926,60.0,89.2381,0.975,0.279674,1.1635,0.03927,7.1512,2.0,40,40
+A,0,selected,Town03+Town10HD,SAC fine-tuning,2,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_A_parallel,40,95.7395,92.5,96.2512,0.99,0.129844,1.2917,0.04619,7.7016,1.0,40,40
+A,0,selected,Town03+Town10HD,Uniform alignment,2,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_A_parallel,40,90.9994,85.0,93.3416,0.955,0.535933,1.1012,0.04522,7.4636,4.0,40,40
+A,0,selected,Town03+Town10HD,Open-set entropy,2,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_A_parallel,40,90.7603,80.0,92.4221,0.9675,0.405746,1.114,0.04341,7.3938,3.0,40,40
+L,0,selected,Town01+Town04+Town05,CaST,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_3shifts,30,92.3614,76.6667,92.3614,1.0,0.0,1.2307,0.03085,5.5372,0.0,30,30
+L,0,selected,Town01+Town04+Town05,SAC fine-tuning,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_3shifts,30,95.8436,73.3333,95.8436,1.0,0.0,1.1804,0.03304,5.7468,0.0,30,30
+L,0,selected,Town01+Town04+Town05,Uniform alignment,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_3shifts,30,95.8716,80.0,95.8716,1.0,0.0,1.0495,0.03316,5.7479,0.0,30,30
+L,0,selected,Town01+Town04+Town05,Open-set entropy,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval_3shifts,30,93.302,86.6667,94.7415,0.9833,0.17606,1.2059,0.03372,5.6799,1.0,30,30
+C,0,selected,Town01+Town04+Town05,CaST,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,60,90.7909,86.6667,91.3927,0.9933,0.091193,1.3791,0.02572,10.9658,1.0,60,60
+C,0,selected,Town01+Town04+Town05,SAC fine-tuning,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,60,93.5969,81.6667,93.8726,0.9917,0.088786,1.2899,0.02589,11.263,1.0,60,60
+C,0,selected,Town01+Town04+Town05,Uniform alignment,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,60,94.0163,85.0,94.5007,0.9917,0.088195,1.246,0.02708,11.3385,1.0,60,60
+C,0,selected,Town01+Town04+Town05,Open-set entropy,3,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,60,92.1712,86.6667,92.1712,1.0,0.0,1.3214,0.02585,11.0601,0.0,60,60
+C,0,four_town,Town01+Town02+Town04+Town05,CaST,4,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,80,90.2004,83.75,90.6518,0.995,0.068994,1.2246,0.02984,14.494,1.0,80,80
+C,0,four_town,Town01+Town02+Town04+Town05,SAC fine-tuning,4,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,80,94.2289,82.5,94.4356,0.9938,0.066225,1.1653,0.03249,15.1,1.0,80,80
+C,0,four_town,Town01+Town02+Town04+Town05,Uniform alignment,4,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,80,92.3269,77.5,92.9609,0.9875,0.13454,1.1092,0.03592,14.8655,2.0,80,80
+C,0,four_town,Town01+Town02+Town04+Town05,Open-set entropy,4,/home/umb/Desktop/cvpr2027/cast_b20_seed0_priority_eval,80,91.712,83.75,92.0021,0.9938,0.067973,1.1704,0.03144,14.7118,1.0,80,80

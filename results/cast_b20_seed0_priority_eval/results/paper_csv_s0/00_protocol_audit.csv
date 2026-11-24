@@ -1,0 +1,17 @@
+town,method,completed_routes,expected_routes,status
+Town01,CaST,20,20,complete
+Town01,Fine-tuning,20,20,complete
+Town01,Uniform,20,20,complete
+Town01,Open-set entropy,20,20,complete
+Town02,CaST,20,20,complete
+Town02,Fine-tuning,20,20,complete
+Town02,Uniform,20,20,complete
+Town02,Open-set entropy,20,20,complete
+Town04,CaST,20,20,complete
+Town04,Fine-tuning,20,20,complete
+Town04,Uniform,20,20,complete
+Town04,Open-set entropy,20,20,complete
+Town05,CaST,20,20,complete
+Town05,Fine-tuning,20,20,complete
+Town05,Uniform,20,20,complete
+Town05,Open-set entropy,20,20,complete

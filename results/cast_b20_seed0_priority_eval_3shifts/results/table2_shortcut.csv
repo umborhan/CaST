@@ -1,0 +1,8 @@
+method,false_stop_pct,missed_stop_pct,reliance_barrels,hesitation_pct,reliance_queue,precision_pct,recall_pct,n_barrel_events,n_red_events,n_queue_events
+Uniform alignment [Borhan et al.],0.0000,0.0000,nan,0.0000,nan,nan,nan,0,0,0
+Causality-aware entropy [ACE],0.0000,0.0000,nan,0.0000,nan,nan,nan,0,0,0
+Latent de-confounding [CausalVAD],0.0000,0.0000,nan,0.0000,nan,nan,nan,0,0,0
+Attention as relevance,0.0000,0.0000,nan,0.0000,nan,nan,nan,0,0,0
+Reliance as relevance,0.0000,0.0000,nan,0.0000,nan,nan,nan,0,0,0
+Margin-only effect,0.0000,0.0000,nan,0.0000,nan,nan,nan,0,0,0
+CaST (this work),0.0000,0.0000,nan,0.0000,nan,nan,nan,0,0,0

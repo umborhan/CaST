@@ -1,0 +1,5 @@
+town,seed,budget,variant,run_id,n_routes,successes,SR,DS,RC,total_collisions,total_km,coll_per_km,auroc_lowest_bin,lowest_bin_steps,lowest_bin_failures
+Town04,0,20,Without coverage gate,C__cast__B20__s0__sampler-cast_gate-False,20,17,85.0,94.09021,94.09021,0.0,3.76312,0.0,0.56014,27953,302
+Town04,0,20,Attention replacing causal effect,C__cast__B20__s0__sampler-cast_relevance-attention,20,19,95.0,94.03492,94.03492,0.0,3.76075,0.0,0.68525,25434,195
+Town04,0,20,Uniform sampling (no CaST sampler),C__cast__B20__s0,20,19,95.0,94.31382,94.31382,0.0,3.77162,0.0,0.54064,25066,353
+Town04,0,20,Full CaST (reused),C__cast__B20__s0__sampler-cast,20,18,90.0,91.90105,91.90105,0.0,3.67646,0.0,0.4325,24851,338

@@ -1,0 +1,7 @@
+scope,baseline,matched_routes,weather_mismatch_skipped,CaST_minus_baseline_mean_DS,CaST_minus_baseline_SR_pp,CaST_DS_wins,CaST_DS_losses,DS_ties
+all_available_towns,Fine-tuning,80,0,-4.028,1.25,41,38,1
+Town01+Town04+Town05,Fine-tuning,60,0,-2.806,5.0,31,29,0
+all_available_towns,Uniform,80,0,-2.126,6.25,45,34,1
+Town01+Town04+Town05,Uniform,60,0,-3.225,1.667,34,26,0
+all_available_towns,Open-set entropy,80,0,-1.512,0.0,42,38,0
+Town01+Town04+Town05,Open-set entropy,60,0,-1.38,0.0,32,28,0

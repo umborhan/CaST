@@ -1,0 +1,321 @@
+suite,seed,budget,town,method,run,route,weather,DS,RC,IS,success,collisions,red_lights,km,min_ttc_s,cte_m
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,0,rain_heavy,98.0057,98.0057,1.0,1,0.0,0.0,0.196,0.6361,0.0002
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,1,rain_heavy,98.0142,98.0142,1.0,1,0.0,0.0,0.1963,0.8405,0.034
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,2,fog_dense,98.0133,98.0133,1.0,1,0.0,0.0,0.1951,0.6554,0.0244
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,3,fog_dense,0.0,0.0,1.0,0,0.0,0.0,0.0,0.9796,0.0
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,4,glare,98.0313,98.0313,1.0,1,0.0,0.0,0.1953,0.7681,0.025
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,5,rain_heavy,98.0137,98.0137,1.0,1,0.0,0.0,0.1967,0.6641,0.0455
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,6,fog_dense,98.0247,98.0247,1.0,1,0.0,0.0,0.1952,1.2372,0.0221
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,7,night,98.0029,98.0029,1.0,1,0.0,0.0,0.1953,0.8964,0.0476
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,8,fog_dense,98.013,98.013,1.0,1,0.0,0.0,0.196,0.4758,0.0003
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,9,glare,98.0198,98.0198,1.0,1,0.0,0.0,0.1966,0.7494,0.0257
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,10,rain_heavy,98.0097,98.0097,1.0,1,0.0,0.0,0.1959,0.643,0.0249
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,11,glare,98.0291,98.0291,1.0,1,0.0,0.0,0.1952,1.0322,0.024
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,12,glare,98.0284,98.0284,1.0,1,0.0,0.0,0.1953,2.123,0.0238
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,13,rain_heavy,72.7872,72.7872,1.0,0,0.0,0.0,0.1451,1.1573,0.0173
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,14,fog_dense,98.0094,98.0094,1.0,1,0.0,0.0,0.1952,1.0551,0.0184
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,15,night,98.0192,98.0192,1.0,1,0.0,0.0,0.1967,0.7508,0.044
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,16,night,98.0226,98.0226,1.0,1,0.0,0.0,0.1961,0.9978,0.0004
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,17,rain_heavy,98.0274,98.0274,1.0,1,0.0,0.0,0.1953,0.6021,0.0685
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,18,glare,98.006,98.006,1.0,1,0.0,0.0,0.1963,0.786,0.0297
+C,0,20,Town01,CaST,C__cast__B20__s0__sampler-cast,19,rain_heavy,98.0243,98.0243,1.0,1,0.0,0.0,0.1966,0.4129,0.0479
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,0,rain_heavy,98.0128,98.0128,1.0,1,0.0,0.0,0.196,0.6874,0.0006
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,1,rain_heavy,98.0046,98.0046,1.0,1,0.0,0.0,0.1963,0.781,0.0259
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,2,fog_dense,98.0132,98.0132,1.0,1,0.0,0.0,0.1952,0.8956,0.0275
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,3,fog_dense,16.5367,33.0734,0.5,0,1.0,0.0,0.0664,0.5123,0.0003
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,4,glare,96.8281,96.8281,1.0,0,0.0,0.0,0.1929,0.754,0.0201
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,5,rain_heavy,98.0229,98.0229,1.0,1,0.0,0.0,0.1967,0.6576,0.0411
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,6,fog_dense,75.0876,75.0876,1.0,0,0.0,0.0,0.1495,0.9271,0.0141
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,7,night,98.0079,98.0079,1.0,1,0.0,0.0,0.1952,0.6421,0.0518
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,8,fog_dense,98.0058,98.0058,1.0,1,0.0,0.0,0.196,0.6923,0.0003
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,9,glare,98.0301,98.0301,1.0,1,0.0,0.0,0.1966,0.7204,0.0269
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,10,rain_heavy,98.012,98.012,1.0,1,0.0,0.0,0.1959,0.6028,0.0269
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,11,glare,97.7718,97.7718,1.0,0,0.0,0.0,0.1948,1.0296,0.0325
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,12,glare,98.012,98.012,1.0,1,0.0,0.0,0.1953,1.059,0.0236
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,13,rain_heavy,68.4273,68.4273,1.0,0,0.0,0.0,0.1364,0.9343,0.0248
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,14,fog_dense,98.0193,98.0193,1.0,1,0.0,0.0,0.1953,0.9065,0.0204
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,15,night,98.0033,98.0033,1.0,1,0.0,0.0,0.1966,0.6544,0.038
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,16,night,98.0118,98.0118,1.0,1,0.0,0.0,0.196,0.4121,0.0006
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,17,rain_heavy,98.0006,98.0006,1.0,1,0.0,0.0,0.1953,0.8738,0.0639
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,18,glare,98.0025,98.0025,1.0,1,0.0,0.0,0.1963,0.6717,0.0281
+C,0,20,Town01,Fine-tuning,C__finetune__B20__s0,19,rain_heavy,98.0127,98.0127,1.0,1,0.0,0.0,0.1966,0.4096,0.0449
+C,0,20,Town01,Uniform,C__uniform__B20__s0,0,rain_heavy,98.0039,98.0039,1.0,1,0.0,0.0,0.1961,0.7127,0.0003
+C,0,20,Town01,Uniform,C__uniform__B20__s0,1,rain_heavy,29.0632,58.1263,0.5,0,1.0,0.0,0.1164,0.8988,0.0451
+C,0,20,Town01,Uniform,C__uniform__B20__s0,2,fog_dense,97.1627,97.1627,1.0,0,0.0,0.0,0.1935,0.5984,0.0212
+C,0,20,Town01,Uniform,C__uniform__B20__s0,3,fog_dense,98.0008,98.0008,1.0,1,0.0,0.0,0.1967,0.4694,0.0357
+C,0,20,Town01,Uniform,C__uniform__B20__s0,4,glare,98.0117,98.0117,1.0,1,0.0,0.0,0.1952,0.7591,0.0237
+C,0,20,Town01,Uniform,C__uniform__B20__s0,5,rain_heavy,98.005,98.005,1.0,1,0.0,0.0,0.1966,0.6372,0.0439
+C,0,20,Town01,Uniform,C__uniform__B20__s0,6,fog_dense,73.1785,73.1785,1.0,0,0.0,0.0,0.1458,2.0947,0.0157
+C,0,20,Town01,Uniform,C__uniform__B20__s0,7,night,98.0092,98.0092,1.0,1,0.0,0.0,0.1954,0.6617,0.0487
+C,0,20,Town01,Uniform,C__uniform__B20__s0,8,fog_dense,98.0105,98.0105,1.0,1,0.0,0.0,0.196,0.6938,0.0003
+C,0,20,Town01,Uniform,C__uniform__B20__s0,9,glare,98.005,98.005,1.0,1,0.0,0.0,0.1967,0.7548,0.02
+C,0,20,Town01,Uniform,C__uniform__B20__s0,10,rain_heavy,98.0062,98.0062,1.0,1,0.0,0.0,0.1958,0.6294,0.0296
+C,0,20,Town01,Uniform,C__uniform__B20__s0,11,glare,98.015,98.015,1.0,1,0.0,0.0,0.1952,1.0362,0.0215
+C,0,20,Town01,Uniform,C__uniform__B20__s0,12,glare,98.0308,98.0308,1.0,1,0.0,0.0,0.1952,0.8277,0.0224
+C,0,20,Town01,Uniform,C__uniform__B20__s0,13,rain_heavy,70.3482,70.3482,1.0,0,0.0,0.0,0.1402,1.1034,0.0203
+C,0,20,Town01,Uniform,C__uniform__B20__s0,14,fog_dense,98.0084,98.0084,1.0,1,0.0,0.0,0.1952,0.9332,0.0215
+C,0,20,Town01,Uniform,C__uniform__B20__s0,15,night,98.0027,98.0027,1.0,1,0.0,0.0,0.1966,0.7156,0.0481
+C,0,20,Town01,Uniform,C__uniform__B20__s0,16,night,98.0019,98.0019,1.0,1,0.0,0.0,0.196,2.0067,0.001
+C,0,20,Town01,Uniform,C__uniform__B20__s0,17,rain_heavy,98.0074,98.0074,1.0,1,0.0,0.0,0.1953,0.6348,0.0414
+C,0,20,Town01,Uniform,C__uniform__B20__s0,18,glare,98.0141,98.0141,1.0,1,0.0,0.0,0.1963,0.7341,0.0277
+C,0,20,Town01,Uniform,C__uniform__B20__s0,19,rain_heavy,98.0187,98.0187,1.0,1,0.0,0.0,0.1967,0.3995,0.0417
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,0,rain_heavy,98.0122,98.0122,1.0,1,0.0,0.0,0.1961,0.6374,0.0005
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,1,rain_heavy,98.0183,98.0183,1.0,1,0.0,0.0,0.1963,0.8551,0.0312
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,2,fog_dense,17.0493,17.0493,1.0,0,0.0,0.0,0.0339,0.8211,0.0484
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,3,fog_dense,40.657,40.657,1.0,0,0.0,0.0,0.0817,0.4546,0.0007
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,4,glare,98.0001,98.0001,1.0,1,0.0,0.0,0.1953,0.9084,0.0158
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,5,rain_heavy,98.0065,98.0065,1.0,1,0.0,0.0,0.1966,0.5911,0.0399
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,6,fog_dense,98.0084,98.0084,1.0,1,0.0,0.0,0.1952,1.2369,0.0185
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,7,night,98.0028,98.0028,1.0,1,0.0,0.0,0.1952,0.7224,0.0509
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,8,fog_dense,98.0192,98.0192,1.0,1,0.0,0.0,0.1961,0.6856,0.0021
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,9,glare,98.0088,98.0088,1.0,1,0.0,0.0,0.1967,0.7063,0.0259
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,10,rain_heavy,98.0017,98.0017,1.0,1,0.0,0.0,0.1958,0.6179,0.0246
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,11,glare,98.0035,98.0035,1.0,1,0.0,0.0,0.1952,1.0323,0.0183
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,12,glare,98.02,98.02,1.0,1,0.0,0.0,0.1952,1.9236,0.0213
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,13,rain_heavy,72.1118,72.1118,1.0,0,0.0,0.0,0.1437,2.8005,0.0173
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,14,fog_dense,97.6158,97.6158,1.0,0,0.0,0.0,0.1945,0.9721,0.0166
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,15,night,98.0131,98.0131,1.0,1,0.0,0.0,0.1966,0.6878,0.0414
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,16,night,98.0259,98.0259,1.0,1,0.0,0.0,0.1961,0.3915,0.0003
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,17,rain_heavy,98.0427,98.0427,1.0,1,0.0,0.0,0.1955,0.5769,0.0676
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,18,glare,98.0113,98.0113,1.0,1,0.0,0.0,0.1963,0.7442,0.0264
+C,0,20,Town01,Open-set entropy,C__openset_entropy__B20__s0,19,rain_heavy,98.0297,98.0297,1.0,1,0.0,0.0,0.1967,0.3972,0.0382
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,20,fog_dense,98.022,98.022,1.0,1,0.0,0.0,0.1966,1.0066,0.0348
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,21,night,98.0212,98.0212,1.0,1,0.0,0.0,0.1952,0.6219,0.0225
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,22,fog_dense,90.5238,90.5238,1.0,0,0.0,0.0,0.1807,0.7509,0.104
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,23,fog_dense,98.0169,98.0169,1.0,1,0.0,0.0,0.1953,0.9257,0.0205
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,24,glare,98.0079,98.0079,1.0,1,0.0,0.0,0.195,1.2267,0.0859
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,25,glare,98.0175,98.0175,1.0,1,0.0,0.0,0.1953,0.8421,0.0238
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,26,rain_heavy,98.0162,98.0162,1.0,1,0.0,0.0,0.1952,0.7483,0.0322
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,27,rain_heavy,98.0076,98.0076,1.0,1,0.0,0.0,0.1956,0.7737,0.0562
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,28,glare,83.3183,83.3183,1.0,0,0.0,0.0,0.1662,0.9183,0.0397
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,29,fog_dense,83.8224,83.8224,1.0,0,0.0,0.0,0.1675,0.8143,0.0537
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,30,glare,98.0133,98.0133,1.0,1,0.0,0.0,0.1951,0.4273,0.023
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,31,fog_dense,98.0037,98.0037,1.0,1,0.0,0.0,0.1966,0.6894,0.0462
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,32,fog_dense,0.0014,0.0014,1.0,0,0.0,0.0,0.0,0.914,0.0
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,33,fog_dense,40.6924,40.6924,1.0,0,0.0,0.0,0.0816,1.2536,0.0326
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,34,glare,98.032,98.032,1.0,1,0.0,0.0,0.1953,0.4325,0.0492
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,35,night,98.0063,98.0063,1.0,1,0.0,0.0,0.1957,0.6931,0.084
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,36,night,98.0083,98.0083,1.0,1,0.0,0.0,0.1952,0.362,0.0326
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,37,rain_heavy,98.0234,98.0234,1.0,1,0.0,0.0,0.1956,0.7315,0.036
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,38,rain_heavy,98.0147,98.0147,1.0,1,0.0,0.0,0.1952,0.6691,0.0243
+C,0,20,Town02,CaST,C__cast__B20__s0__sampler-cast,39,fog_dense,98.0089,98.0089,1.0,1,0.0,0.0,0.1952,0.4225,0.0432
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,20,fog_dense,98.0233,98.0233,1.0,1,0.0,0.0,0.1964,0.6954,0.0308
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,21,night,98.0295,98.0295,1.0,1,0.0,0.0,0.1952,0.6153,0.0225
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,22,fog_dense,90.8609,90.8609,1.0,0,0.0,0.0,0.1815,0.6586,0.1746
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,23,fog_dense,98.0001,98.0001,1.0,1,0.0,0.0,0.1952,1.0678,0.0186
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,24,glare,98.0052,98.0052,1.0,1,0.0,0.0,0.1949,1.2625,0.0926
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,25,glare,98.0148,98.0148,1.0,1,0.0,0.0,0.1953,1.2241,0.0232
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,26,rain_heavy,98.0384,98.0384,1.0,1,0.0,0.0,0.1953,0.7284,0.0572
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,27,rain_heavy,98.0076,98.0076,1.0,1,0.0,0.0,0.1957,0.6537,0.0633
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,28,glare,81.7442,81.7442,1.0,0,0.0,0.0,0.1631,1.1143,0.0396
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,29,fog_dense,83.6735,83.6735,1.0,0,0.0,0.0,0.1673,1.0446,0.0519
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,30,glare,98.0064,98.0064,1.0,1,0.0,0.0,0.1951,0.8435,0.0282
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,31,fog_dense,98.0007,98.0007,1.0,1,0.0,0.0,0.1967,0.688,0.0516
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,32,fog_dense,98.0225,98.0225,1.0,1,0.0,0.0,0.1967,0.728,0.0314
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,33,fog_dense,98.0002,98.0002,1.0,1,0.0,0.0,0.1962,0.827,0.0839
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,34,glare,98.0094,98.0094,1.0,1,0.0,0.0,0.1953,0.5709,0.0587
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,35,night,98.0081,98.0081,1.0,1,0.0,0.0,0.1957,0.6678,0.0727
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,36,night,98.001,98.001,1.0,1,0.0,0.0,0.1952,0.3637,0.0336
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,37,rain_heavy,98.0109,98.0109,1.0,1,0.0,0.0,0.1956,0.8033,0.045
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,38,rain_heavy,98.0265,98.0265,1.0,1,0.0,0.0,0.1952,0.8604,0.0231
+C,0,20,Town02,Fine-tuning,C__finetune__B20__s0,39,fog_dense,98.0111,98.0111,1.0,1,0.0,0.0,0.1953,0.4139,0.0432
+C,0,20,Town02,Uniform,C__uniform__B20__s0,20,fog_dense,98.0123,98.0123,1.0,1,0.0,0.0,0.1965,0.5794,0.056
+C,0,20,Town02,Uniform,C__uniform__B20__s0,21,night,97.0841,97.0841,1.0,0,0.0,0.0,0.1933,0.7723,0.0155
+C,0,20,Town02,Uniform,C__uniform__B20__s0,22,fog_dense,90.5238,90.5238,1.0,0,0.0,0.0,0.1809,1.0216,0.1591
+C,0,20,Town02,Uniform,C__uniform__B20__s0,23,fog_dense,98.0029,98.0029,1.0,1,0.0,0.0,0.1952,0.9246,0.0297
+C,0,20,Town02,Uniform,C__uniform__B20__s0,24,glare,62.6833,62.6833,1.0,0,0.0,0.0,0.125,0.7507,0.0604
+C,0,20,Town02,Uniform,C__uniform__B20__s0,25,glare,21.6562,43.3124,0.5,0,1.0,0.0,0.0862,0.8952,0.0015
+C,0,20,Town02,Uniform,C__uniform__B20__s0,26,rain_heavy,98.0179,98.0179,1.0,1,0.0,0.0,0.1952,0.7073,0.066
+C,0,20,Town02,Uniform,C__uniform__B20__s0,27,rain_heavy,98.0054,98.0054,1.0,1,0.0,0.0,0.1956,0.7617,0.0641
+C,0,20,Town02,Uniform,C__uniform__B20__s0,28,glare,84.6693,84.6693,1.0,0,0.0,0.0,0.1689,0.8885,0.0433
+C,0,20,Town02,Uniform,C__uniform__B20__s0,29,fog_dense,86.0146,86.0146,1.0,0,0.0,0.0,0.172,0.7908,0.0578
+C,0,20,Town02,Uniform,C__uniform__B20__s0,30,glare,98.025,98.025,1.0,1,0.0,0.0,0.1951,0.435,0.0217
+C,0,20,Town02,Uniform,C__uniform__B20__s0,31,fog_dense,98.0053,98.0053,1.0,1,0.0,0.0,0.1965,0.3578,0.0509
+C,0,20,Town02,Uniform,C__uniform__B20__s0,32,fog_dense,98.0039,98.0039,1.0,1,0.0,0.0,0.1967,0.4671,0.0239
+C,0,20,Town02,Uniform,C__uniform__B20__s0,33,fog_dense,38.5829,38.5829,1.0,0,0.0,0.0,0.0773,0.9165,0.1366
+C,0,20,Town02,Uniform,C__uniform__B20__s0,34,glare,98.0235,98.0235,1.0,1,0.0,0.0,0.1953,0.4559,0.0592
+C,0,20,Town02,Uniform,C__uniform__B20__s0,35,night,87.8428,87.8428,1.0,0,0.0,0.0,0.1759,0.9147,0.2188
+C,0,20,Town02,Uniform,C__uniform__B20__s0,36,night,97.9735,97.9735,1.0,0,0.0,0.0,0.1951,0.422,0.0338
+C,0,20,Town02,Uniform,C__uniform__B20__s0,37,rain_heavy,98.0145,98.0145,1.0,1,0.0,0.0,0.1956,0.7846,0.0726
+C,0,20,Town02,Uniform,C__uniform__B20__s0,38,rain_heavy,98.0158,98.0158,1.0,1,0.0,0.0,0.1952,0.7106,0.0177
+C,0,20,Town02,Uniform,C__uniform__B20__s0,39,fog_dense,98.0132,98.0132,1.0,1,0.0,0.0,0.1953,0.4183,0.0601
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,20,fog_dense,98.0414,98.0414,1.0,1,0.0,0.0,0.1964,0.9143,0.0404
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,21,night,98.0066,98.0066,1.0,1,0.0,0.0,0.1952,0.6686,0.0252
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,22,fog_dense,92.9618,92.9618,1.0,0,0.0,0.0,0.1857,0.6868,0.0605
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,23,fog_dense,98.0161,98.0161,1.0,1,0.0,0.0,0.1953,0.9214,0.0269
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,24,glare,63.5173,63.5173,1.0,0,0.0,0.0,0.1267,0.8473,0.0555
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,25,glare,98.0132,98.0132,1.0,1,0.0,0.0,0.1953,1.1367,0.0313
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,26,rain_heavy,98.0059,98.0059,1.0,1,0.0,0.0,0.1951,0.779,0.0562
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,27,rain_heavy,98.0237,98.0237,1.0,1,0.0,0.0,0.1957,0.7813,0.0713
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,28,glare,98.0268,98.0268,1.0,1,0.0,0.0,0.1957,0.6185,0.0672
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,29,fog_dense,72.347,72.347,1.0,0,0.0,0.0,0.1445,0.9723,0.0379
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,30,glare,98.031,98.031,1.0,1,0.0,0.0,0.1952,0.658,0.0245
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,31,fog_dense,23.2046,46.4093,0.5,0,1.0,0.0,0.093,0.7003,0.0676
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,32,fog_dense,98.0182,98.0182,1.0,1,0.0,0.0,0.1967,0.6106,0.0251
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,33,fog_dense,84.4096,84.4096,1.0,0,0.0,0.0,0.1689,0.849,0.0496
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,34,glare,98.0056,98.0056,1.0,1,0.0,0.0,0.1953,0.4159,0.1083
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,35,night,98.016,98.016,1.0,1,0.0,0.0,0.1958,0.6692,0.0718
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,36,night,98.0025,98.0025,1.0,1,0.0,0.0,0.1952,0.4019,0.0343
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,37,rain_heavy,98.002,98.002,1.0,1,0.0,0.0,0.1956,0.6539,0.0406
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,38,rain_heavy,98.0211,98.0211,1.0,1,0.0,0.0,0.1952,0.6445,0.0228
+C,0,20,Town02,Open-set entropy,C__openset_entropy__B20__s0,39,fog_dense,98.0229,98.0229,1.0,1,0.0,0.0,0.1953,0.422,0.0474
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,40,fog_dense,98.0077,98.0077,1.0,1,0.0,0.0,0.1965,1.5438,0.0343
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,41,glare,98.025,98.025,1.0,1,0.0,0.0,0.1961,0.5114,0.0001
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,42,night,98.0014,98.0014,1.0,1,0.0,0.0,0.1956,0.8478,0.0504
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,43,night,98.0038,98.0038,1.0,1,0.0,0.0,0.1955,2.5927,0.0258
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,44,fog_dense,98.0257,98.0257,1.0,1,0.0,0.0,0.1952,2.3151,0.0371
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,45,glare,98.0019,98.0019,1.0,1,0.0,0.0,0.196,2.2865,0.0002
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,46,fog_dense,98.0289,98.0289,1.0,1,0.0,0.0,0.1962,0.8473,0.0542
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,47,night,98.0045,98.0045,1.0,1,0.0,0.0,0.1965,2.0551,0.0272
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,48,rain_heavy,98.0054,98.0054,1.0,1,0.0,0.0,0.1962,2.014,0.0036
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,49,fog_dense,98.0262,98.0262,1.0,1,0.0,0.0,0.1961,1.0768,0.0001
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,50,rain_heavy,98.0076,98.0076,1.0,1,0.0,0.0,0.1965,1.8451,0.0111
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,51,rain_heavy,98.01,98.01,1.0,1,0.0,0.0,0.1954,1.4132,0.0096
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,52,fog_dense,98.0047,98.0047,1.0,1,0.0,0.0,0.1959,2.5751,0.0349
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,53,fog_dense,98.0053,98.0053,1.0,1,0.0,0.0,0.1967,4.1703,0.0503
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,54,fog_dense,43.6572,43.6572,1.0,0,0.0,0.0,0.0895,2.6485,0.0774
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,55,rain_heavy,98.0039,98.0039,1.0,1,0.0,0.0,0.1951,1.1755,0.039
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,56,glare,98.0304,98.0304,1.0,1,0.0,0.0,0.1961,3.6519,0.0002
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,57,fog_dense,30.1585,30.1585,1.0,0,0.0,0.0,0.0603,1.4226,0.1179
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,58,night,98.0086,98.0086,1.0,1,0.0,0.0,0.1956,0.7044,0.0434
+C,0,20,Town04,CaST,C__cast__B20__s0__sampler-cast,59,night,98.004,98.004,1.0,1,0.0,0.0,0.1957,2.9589,0.0224
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,40,fog_dense,98.0363,98.0363,1.0,1,0.0,0.0,0.1965,1.5558,0.035
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,41,glare,98.0288,98.0288,1.0,1,0.0,0.0,0.1961,0.4749,0.0001
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,42,night,98.0013,98.0013,1.0,1,0.0,0.0,0.1956,0.9116,0.0505
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,43,night,98.0237,98.0237,1.0,1,0.0,0.0,0.1956,2.6419,0.0258
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,44,fog_dense,98.0069,98.0069,1.0,1,0.0,0.0,0.1952,2.3145,0.0369
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,45,glare,98.0035,98.0035,1.0,1,0.0,0.0,0.196,2.3292,0.0002
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,46,fog_dense,51.8756,51.8756,1.0,0,0.0,0.0,0.1041,0.6513,0.0255
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,47,night,98.004,98.004,1.0,1,0.0,0.0,0.1965,2.0269,0.0282
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,48,rain_heavy,98.0108,98.0108,1.0,1,0.0,0.0,0.1962,2.0398,0.0035
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,49,fog_dense,98.042,98.042,1.0,1,0.0,0.0,0.1961,1.0076,0.0001
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,50,rain_heavy,98.0052,98.0052,1.0,1,0.0,0.0,0.1964,1.9151,0.0111
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,51,rain_heavy,98.028,98.028,1.0,1,0.0,0.0,0.1954,1.4608,0.01
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,52,fog_dense,98.0205,98.0205,1.0,1,0.0,0.0,0.1959,2.6482,0.0322
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,53,fog_dense,81.5888,81.5888,1.0,0,0.0,0.0,0.1637,2.3953,0.0316
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,54,fog_dense,98.0237,98.0237,1.0,1,0.0,0.0,0.1975,3.0552,0.0865
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,55,rain_heavy,98.0209,98.0209,1.0,1,0.0,0.0,0.1951,1.1741,0.0415
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,56,glare,98.0087,98.0087,1.0,1,0.0,0.0,0.196,3.6686,0.0001
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,57,fog_dense,98.0144,98.0144,1.0,1,0.0,0.0,0.1958,1.177,0.118
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,58,night,98.002,98.002,1.0,1,0.0,0.0,0.1956,0.8629,0.0445
+C,0,20,Town04,Fine-tuning,C__finetune__B20__s0,59,night,98.0112,98.0112,1.0,1,0.0,0.0,0.1957,2.8081,0.0233
+C,0,20,Town04,Uniform,C__uniform__B20__s0,40,fog_dense,98.0356,98.0356,1.0,1,0.0,0.0,0.1965,1.5493,0.0343
+C,0,20,Town04,Uniform,C__uniform__B20__s0,41,glare,98.0025,98.0025,1.0,1,0.0,0.0,0.196,0.5323,0.0001
+C,0,20,Town04,Uniform,C__uniform__B20__s0,42,night,98.0283,98.0283,1.0,1,0.0,0.0,0.1957,0.8001,0.0363
+C,0,20,Town04,Uniform,C__uniform__B20__s0,43,night,98.0324,98.0324,1.0,1,0.0,0.0,0.1956,2.6137,0.0259
+C,0,20,Town04,Uniform,C__uniform__B20__s0,44,fog_dense,98.0351,98.0351,1.0,1,0.0,0.0,0.1952,2.3257,0.0383
+C,0,20,Town04,Uniform,C__uniform__B20__s0,45,glare,98.0103,98.0103,1.0,1,0.0,0.0,0.196,2.2592,0.0002
+C,0,20,Town04,Uniform,C__uniform__B20__s0,46,fog_dense,54.2348,54.2348,1.0,0,0.0,0.0,0.1088,0.8844,0.0398
+C,0,20,Town04,Uniform,C__uniform__B20__s0,47,night,98.0104,98.0104,1.0,1,0.0,0.0,0.1965,2.0529,0.0286
+C,0,20,Town04,Uniform,C__uniform__B20__s0,48,rain_heavy,98.0005,98.0005,1.0,1,0.0,0.0,0.1962,2.0324,0.0039
+C,0,20,Town04,Uniform,C__uniform__B20__s0,49,fog_dense,98.0312,98.0312,1.0,1,0.0,0.0,0.1961,1.0856,0.0002
+C,0,20,Town04,Uniform,C__uniform__B20__s0,50,rain_heavy,98.0058,98.0058,1.0,1,0.0,0.0,0.1964,1.8103,0.0114
+C,0,20,Town04,Uniform,C__uniform__B20__s0,51,rain_heavy,98.0188,98.0188,1.0,1,0.0,0.0,0.1954,1.4757,0.0101
+C,0,20,Town04,Uniform,C__uniform__B20__s0,52,fog_dense,98.0174,98.0174,1.0,1,0.0,0.0,0.1959,2.6485,0.0316
+C,0,20,Town04,Uniform,C__uniform__B20__s0,53,fog_dense,81.5254,81.5254,1.0,0,0.0,0.0,0.1636,0.8567,0.0284
+C,0,20,Town04,Uniform,C__uniform__B20__s0,54,fog_dense,78.3308,78.3308,1.0,0,0.0,0.0,0.1581,1.0723,0.1325
+C,0,20,Town04,Uniform,C__uniform__B20__s0,55,rain_heavy,98.0206,98.0206,1.0,1,0.0,0.0,0.1951,1.1717,0.0404
+C,0,20,Town04,Uniform,C__uniform__B20__s0,56,glare,98.0207,98.0207,1.0,1,0.0,0.0,0.196,3.6269,0.0002
+C,0,20,Town04,Uniform,C__uniform__B20__s0,57,fog_dense,98.0067,98.0067,1.0,1,0.0,0.0,0.1958,0.9557,0.1318
+C,0,20,Town04,Uniform,C__uniform__B20__s0,58,night,98.0088,98.0088,1.0,1,0.0,0.0,0.1956,0.8916,0.0423
+C,0,20,Town04,Uniform,C__uniform__B20__s0,59,night,98.0197,98.0197,1.0,1,0.0,0.0,0.1957,2.8074,0.0237
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,40,fog_dense,97.7849,97.7849,1.0,0,0.0,0.0,0.1961,1.5311,0.031
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,41,glare,98.0095,98.0095,1.0,1,0.0,0.0,0.196,0.4852,0.0001
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,42,night,9.5207,9.5207,1.0,0,0.0,0.0,0.0191,2.2347,0.0036
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,43,night,98.0309,98.0309,1.0,1,0.0,0.0,0.1956,2.7297,0.0267
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,44,fog_dense,98.0226,98.0226,1.0,1,0.0,0.0,0.1952,2.3184,0.0379
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,45,glare,98.008,98.008,1.0,1,0.0,0.0,0.196,2.3713,0.0002
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,46,fog_dense,98.001,98.001,1.0,1,0.0,0.0,0.1962,1.0155,0.0649
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,47,night,98.0017,98.0017,1.0,1,0.0,0.0,0.1965,2.0921,0.027
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,48,rain_heavy,98.0083,98.0083,1.0,1,0.0,0.0,0.1962,2.0267,0.0036
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,49,fog_dense,98.0156,98.0156,1.0,1,0.0,0.0,0.1961,1.2137,0.0006
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,50,rain_heavy,98.0315,98.0315,1.0,1,0.0,0.0,0.1965,1.9415,0.011
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,51,rain_heavy,98.0289,98.0289,1.0,1,0.0,0.0,0.1954,1.4148,0.0097
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,52,fog_dense,98.0399,98.0399,1.0,1,0.0,0.0,0.196,2.8923,0.0321
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,53,fog_dense,98.0131,98.0131,1.0,1,0.0,0.0,0.1967,0.7801,0.0462
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,54,fog_dense,20.3329,20.3329,1.0,0,0.0,0.0,0.042,2.2592,0.0913
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,55,rain_heavy,98.0071,98.0071,1.0,1,0.0,0.0,0.1951,1.1828,0.0394
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,56,glare,98.0192,98.0192,1.0,1,0.0,0.0,0.196,3.6131,0.0002
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,57,fog_dense,98.0056,98.0056,1.0,1,0.0,0.0,0.1959,1.4919,0.1081
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,58,night,98.0006,98.0006,1.0,1,0.0,0.0,0.1957,0.7906,0.039
+C,0,20,Town04,Open-set entropy,C__openset_entropy__B20__s0,59,night,98.0047,98.0047,1.0,1,0.0,0.0,0.1957,2.8425,0.0226
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,60,night,98.0215,98.0215,1.0,1,0.0,0.0,0.197,0.8839,0.0438
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,61,fog_dense,98.0321,98.0321,1.0,1,0.0,0.0,0.1967,0.8509,0.0151
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,62,night,98.0219,98.0219,1.0,1,0.0,0.0,0.1961,1.124,0.0011
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,63,rain_heavy,98.0324,98.0324,1.0,1,0.0,0.0,0.1968,1.2533,0.0335
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,64,glare,98.0061,98.0061,1.0,1,0.0,0.0,0.1949,1.1272,0.0334
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,65,night,98.0186,98.0186,1.0,1,0.0,0.0,0.1951,1.5461,0.02
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,66,glare,98.0258,98.0258,1.0,1,0.0,0.0,0.1955,1.8491,0.0385
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,67,rain_heavy,0.0072,0.0072,1.0,0,0.0,0.0,0.0,1.9769,0.0
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,68,rain_heavy,98.0138,98.0138,1.0,1,0.0,0.0,0.1952,0.8787,0.0566
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,69,glare,98.0341,98.0341,1.0,1,0.0,0.0,0.1961,1.2599,0.0257
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,70,night,98.0078,98.0078,1.0,1,0.0,0.0,0.1956,0.6663,0.0009
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,71,night,83.4013,83.4013,1.0,0,0.0,0.0,0.1671,1.8469,0.0209
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,72,night,98.012,98.012,1.0,1,0.0,0.0,0.1961,1.6405,0.0448
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,73,night,98.0209,98.0209,1.0,1,0.0,0.0,0.1968,4.0544,0.0124
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,74,glare,98.0112,98.0112,1.0,1,0.0,0.0,0.1968,0.8414,0.0107
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,75,rain_heavy,98.0298,98.0298,1.0,1,0.0,0.0,0.1968,0.5876,0.0158
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,76,glare,98.0092,98.0092,1.0,1,0.0,0.0,0.1962,2.0334,0.0011
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,77,fog_dense,66.4338,66.4338,1.0,0,0.0,0.0,0.1336,0.5098,0.0052
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,78,night,54.1659,90.2765,0.6,0,1.0,0.0,0.1806,0.7529,0.0009
+C,0,20,Town05,CaST,C__cast__B20__s0__sampler-cast,79,night,98.0254,98.0254,1.0,1,0.0,0.0,0.196,0.9441,0.0003
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,60,night,98.0358,98.0358,1.0,1,0.0,0.0,0.197,0.8113,0.0462
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,61,fog_dense,73.5078,73.5078,1.0,0,0.0,0.0,0.1475,0.8469,0.0123
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,62,night,98.007,98.007,1.0,1,0.0,0.0,0.1961,1.1108,0.001
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,63,rain_heavy,98.0091,98.0091,1.0,1,0.0,0.0,0.1968,1.2251,0.0434
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,64,glare,98.0017,98.0017,1.0,1,0.0,0.0,0.1949,1.935,0.0425
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,65,night,98.0193,98.0193,1.0,1,0.0,0.0,0.1951,2.892,0.0176
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,66,glare,98.0567,98.0567,1.0,1,0.0,0.0,0.1956,1.3621,0.036
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,67,rain_heavy,98.0295,98.0295,1.0,1,0.0,0.0,0.1959,1.134,0.041
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,68,rain_heavy,98.002,98.002,1.0,1,0.0,0.0,0.1952,1.3664,0.0387
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,69,glare,98.0342,98.0342,1.0,1,0.0,0.0,0.1961,1.0824,0.0337
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,70,night,98.0164,98.0164,1.0,1,0.0,0.0,0.1957,0.4814,0.0009
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,71,night,98.0038,98.0038,1.0,1,0.0,0.0,0.1963,1.8455,0.0253
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,72,night,81.8417,81.8417,1.0,0,0.0,0.0,0.1637,0.8554,0.0524
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,73,night,98.0042,98.0042,1.0,1,0.0,0.0,0.1967,0.9314,0.0108
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,74,glare,98.003,98.003,1.0,1,0.0,0.0,0.1968,2.0256,0.0117
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,75,rain_heavy,72.4742,72.4742,1.0,0,0.0,0.0,0.1456,0.6502,0.0026
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,76,glare,98.0306,98.0306,1.0,1,0.0,0.0,0.1963,2.4697,0.001
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,77,fog_dense,98.0084,98.0084,1.0,1,0.0,0.0,0.1971,0.9521,0.0165
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,78,night,97.1342,97.1342,1.0,0,0.0,0.0,0.1944,0.5987,0.0026
+C,0,20,Town05,Fine-tuning,C__finetune__B20__s0,79,night,98.0175,98.0175,1.0,1,0.0,0.0,0.196,0.8728,0.0004
+C,0,20,Town05,Uniform,C__uniform__B20__s0,60,night,98.01,98.01,1.0,1,0.0,0.0,0.197,0.8322,0.0453
+C,0,20,Town05,Uniform,C__uniform__B20__s0,61,fog_dense,98.0317,98.0317,1.0,1,0.0,0.0,0.1967,0.7853,0.0154
+C,0,20,Town05,Uniform,C__uniform__B20__s0,62,night,98.009,98.009,1.0,1,0.0,0.0,0.1961,0.8463,0.001
+C,0,20,Town05,Uniform,C__uniform__B20__s0,63,rain_heavy,98.0182,98.0182,1.0,1,0.0,0.0,0.1967,1.2366,0.0345
+C,0,20,Town05,Uniform,C__uniform__B20__s0,64,glare,98.0278,98.0278,1.0,1,0.0,0.0,0.1949,1.1273,0.029
+C,0,20,Town05,Uniform,C__uniform__B20__s0,65,night,98.0024,98.0024,1.0,1,0.0,0.0,0.1951,1.732,0.0228
+C,0,20,Town05,Uniform,C__uniform__B20__s0,66,glare,98.0237,98.0237,1.0,1,0.0,0.0,0.1955,1.7885,0.0354
+C,0,20,Town05,Uniform,C__uniform__B20__s0,67,rain_heavy,98.0031,98.0031,1.0,1,0.0,0.0,0.1958,1.1973,0.0356
+C,0,20,Town05,Uniform,C__uniform__B20__s0,68,rain_heavy,98.0058,98.0058,1.0,1,0.0,0.0,0.1952,1.2788,0.0408
+C,0,20,Town05,Uniform,C__uniform__B20__s0,69,glare,98.01,98.01,1.0,1,0.0,0.0,0.1961,1.2971,0.0468
+C,0,20,Town05,Uniform,C__uniform__B20__s0,70,night,98.0122,98.0122,1.0,1,0.0,0.0,0.1957,0.4992,0.0009
+C,0,20,Town05,Uniform,C__uniform__B20__s0,71,night,98.0007,98.0007,1.0,1,0.0,0.0,0.1963,2.4632,0.03
+C,0,20,Town05,Uniform,C__uniform__B20__s0,72,night,80.7497,80.7497,1.0,0,0.0,0.0,0.1616,0.8714,0.0483
+C,0,20,Town05,Uniform,C__uniform__B20__s0,73,night,98.0351,98.0351,1.0,1,0.0,0.0,0.1968,0.9016,0.011
+C,0,20,Town05,Uniform,C__uniform__B20__s0,74,glare,98.0086,98.0086,1.0,1,0.0,0.0,0.1968,0.8417,0.0103
+C,0,20,Town05,Uniform,C__uniform__B20__s0,75,rain_heavy,98.0161,98.0161,1.0,1,0.0,0.0,0.1967,0.5922,0.0151
+C,0,20,Town05,Uniform,C__uniform__B20__s0,76,glare,98.0195,98.0195,1.0,1,0.0,0.0,0.1962,3.068,0.0011
+C,0,20,Town05,Uniform,C__uniform__B20__s0,77,fog_dense,77.6849,77.6849,1.0,0,0.0,0.0,0.1562,1.0186,0.0097
+C,0,20,Town05,Uniform,C__uniform__B20__s0,78,night,98.0025,98.0025,1.0,1,0.0,0.0,0.1961,0.7966,0.0019
+C,0,20,Town05,Uniform,C__uniform__B20__s0,79,night,98.0083,98.0083,1.0,1,0.0,0.0,0.196,0.8311,0.0004
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,60,night,98.0158,98.0158,1.0,1,0.0,0.0,0.197,0.7906,0.0448
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,61,fog_dense,98.0315,98.0315,1.0,1,0.0,0.0,0.1967,0.8544,0.0142
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,62,night,98.0278,98.0278,1.0,1,0.0,0.0,0.1961,0.8584,0.0011
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,63,rain_heavy,98.0024,98.0024,1.0,1,0.0,0.0,0.1967,1.2409,0.0375
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,64,glare,98.0303,98.0303,1.0,1,0.0,0.0,0.1949,1.9732,0.0319
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,65,night,98.0244,98.0244,1.0,1,0.0,0.0,0.1951,1.2982,0.0181
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,66,glare,98.0016,98.0016,1.0,1,0.0,0.0,0.1955,1.2642,0.0398
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,67,rain_heavy,98.0194,98.0194,1.0,1,0.0,0.0,0.1959,1.2504,0.0332
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,68,rain_heavy,98.0145,98.0145,1.0,1,0.0,0.0,0.1952,1.2788,0.0432
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,69,glare,98.0288,98.0288,1.0,1,0.0,0.0,0.1961,1.0781,0.0311
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,70,night,98.0041,98.0041,1.0,1,0.0,0.0,0.1956,0.7043,0.001
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,71,night,98.0175,98.0175,1.0,1,0.0,0.0,0.1964,2.3194,0.0232
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,72,night,98.0009,98.0009,1.0,1,0.0,0.0,0.1961,0.8562,0.078
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,73,night,98.0162,98.0162,1.0,1,0.0,0.0,0.1968,2.111,0.0138
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,74,glare,98.0188,98.0188,1.0,1,0.0,0.0,0.1968,0.8412,0.0107
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,75,rain_heavy,98.0023,98.0023,1.0,1,0.0,0.0,0.1968,0.5879,0.0124
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,76,glare,98.0148,98.0148,1.0,1,0.0,0.0,0.1962,1.7605,0.001
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,77,fog_dense,78.4284,78.4284,1.0,0,0.0,0.0,0.1576,1.4662,0.0127
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,78,night,98.0198,98.0198,1.0,1,0.0,0.0,0.1961,0.9348,0.0014
+C,0,20,Town05,Open-set entropy,C__openset_entropy__B20__s0,79,night,98.0054,98.0054,1.0,1,0.0,0.0,0.196,0.8242,0.0005

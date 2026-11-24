@@ -1,0 +1,5 @@
+scope,method,n_seeds,n_routes,successes,success_rate_pct,mean_DS,mean_RC,mean_IS,total_km,total_collisions,collisions_per_km,collision_routes,red_light_events,red_lights_per_km,mean_min_ttc_s_capped10,mean_cte_m
+all_available_towns,CaST,1,80,67,83.75,90.2,90.652,0.995,14.494,1.0,0.069,1,0.0,0.0,1.225,0.03
+all_available_towns,Fine-tuning,1,80,66,82.5,94.229,94.436,0.9938,15.1,1.0,0.0662,1,0.0,0.0,1.165,0.032
+all_available_towns,Uniform,1,80,62,77.5,92.327,92.961,0.9875,14.8654,2.0,0.1345,2,0.0,0.0,1.109,0.036
+all_available_towns,Open-set entropy,1,80,67,83.75,91.712,92.002,0.9938,14.7121,1.0,0.068,1,0.0,0.0,1.17,0.031
